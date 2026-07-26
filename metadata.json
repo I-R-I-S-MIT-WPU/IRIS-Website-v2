@@ -1,0 +1,6 @@
+{
+  "name": "I.R.I.S. | Innovation, Research & Intelligence System",
+  "description": "The official portal for I.R.I.S., a tech hub and research laboratory dedicated to cutting-edge robotics, AI, and hardware engineering.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

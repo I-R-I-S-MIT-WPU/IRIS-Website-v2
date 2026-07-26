@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@700;800&display=swap');
+@import url('https://fonts.cdnfonts.com/css/hanson');
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Hanson';
+  src: url('https://fonts.cdnfonts.com/s/72120/HansonBold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "Poppins", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Hanson", "Syne", "Bebas Neue", sans-serif;
+  --font-hanson: "Hanson", "Syne", "Bebas Neue", sans-serif;
+  --font-bebas: "Bebas Neue", "Hanson", sans-serif;
+  --font-poppins: "Poppins", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  
+  --color-iris-purple: #9061f9;
+  --color-iris-dark: #0a0a0c;
+  --color-iris-card: rgba(16, 16, 20, 0.6);
+  --color-iris-border: rgba(144, 97, 249, 0.2);
+}
+
+body {
+  font-family: var(--font-poppins);
+  background-color: var(--color-iris-dark);
+  color: #f3f4f6;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0c;
+}
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+
