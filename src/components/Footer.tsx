@@ -27,11 +27,11 @@ export default function Footer({ onScrollToSection, onOpenProjects }: FooterProp
   };
 
   return (
-    <footer id="footer-section" className="bg-[#0a0a0c] pt-20 pb-8 px-6 lg:px-12 border-t border-transparent relative overflow-hidden text-left">
-      {/* Radial purple glow from bottom - wide, flat, bright center */}
+    <footer id="footer-section" className="bg-black pt-20 pb-8 px-6 lg:px-12 border-t border-transparent relative overflow-hidden text-left">
+      {/* Radial purple glow - wide, bright, resolves to black fast */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute -bottom-[200px] left-1/2 -translate-x-1/2 w-[1200px] h-[400px] rounded-full bg-[#6d28d9] opacity-80 blur-[120px]" />
-        <div className="absolute -bottom-[180px] left-1/2 -translate-x-1/2 w-[600px] h-[350px] rounded-full bg-[#c084fc] opacity-90 blur-[80px]" />
+        <div className="absolute bottom-[-600px] left-1/2 -translate-x-1/2 w-[2000px] h-[700px] rounded-full bg-[#9333ea] opacity-90 blur-[100px]" />
+        <div className="absolute bottom-[-580px] left-1/2 -translate-x-1/2 w-[1000px] h-[650px] rounded-full bg-[#c084fc] opacity-80 blur-[80px]" />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">

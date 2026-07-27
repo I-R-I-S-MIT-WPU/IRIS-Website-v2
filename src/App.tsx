@@ -41,7 +41,7 @@ export default function App() {
   };
 
   return (
-    <div id="iris-app-root" className="min-h-screen bg-iris-dark text-white selection:bg-iris-purple/30 selection:text-white relative">
+    <div id="iris-app-root" className="min-h-screen bg-black text-white selection:bg-iris-purple/30 selection:text-white relative">
       
       {/* 1. Header Navigation */}
       <Navbar

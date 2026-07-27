@@ -39,54 +39,26 @@ export default function Navbar({ onScrollToSection, onOpenProjects }: NavbarProp
           isScrolled ? 'top-3 sm:top-4' : 'top-6'
         }`}
       >
-        <div 
-          className={`w-full max-w-7xl mx-auto bg-white rounded-full flex items-center justify-between pointer-events-auto transition-all duration-300 border border-white/40 ${
-            isScrolled 
-              ? 'p-1.5 sm:p-2 shadow-[0_15px_40px_rgba(0,0,0,0.22)] bg-white/95 backdrop-blur-md max-w-5xl' 
-              : 'p-2.5 sm:p-3 shadow-[0_12px_35px_rgba(0,0,0,0.15)] md:shadow-[0_18px_45px_rgba(0,0,0,0.22)]'
+        <div
+          className={`w-full max-w-7xl mx-auto bg-white rounded-2xl flex items-center justify-between pointer-events-auto transition-all duration-300 border border-white/40 ${
+            isScrolled
+              ? 'p-1 sm:p-1.5 shadow-[0_15px_40px_rgba(0,0,0,0.22)] bg-white/95 backdrop-blur-md max-w-5xl'
+              : 'p-1.5 sm:p-2 shadow-[0_12px_35px_rgba(0,0,0,0.15)] md:shadow-[0_18px_45px_rgba(0,0,0,0.22)]'
           }`}
         >
-          {/* Logo - Black Circular Seal with White Circular Text */}
+          {/* Logo */}
           <button
             id="nav-logo-btn"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="flex items-center gap-3 group cursor-pointer focus:outline-none ml-1 flex-shrink-0"
+            className="flex items-center gap-2 group cursor-pointer focus:outline-none ml-1 flex-shrink-0"
           >
-            <div className={`relative flex items-center justify-center transition-all duration-300 group-hover:scale-105 ${
-              isScrolled ? 'w-9 h-9 sm:w-10 sm:h-10' : 'w-11 h-11 sm:w-12 sm:h-12'
-            }`}>
-              <svg viewBox="0 0 100 100" className="w-full h-full">
-                {/* Black solid backing */}
-                <circle cx="50" cy="50" r="48" fill="#000000" />
-                {/* Thin white design line */}
-                <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="0.75" strokeDasharray="3,3" />
-                
-                {/* Text rotation path */}
-                <path
-                  id="logo-circular-text-path"
-                  d="M 50, 14 A 36, 36 0 1, 1 49.9, 14"
-                  fill="none"
-                />
-                
-                {/* Circular text using Poppins font style */}
-                <text className="text-[5.5px] fill-zinc-400 uppercase tracking-[0.14em]" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}>
-                  <textPath href="#logo-circular-text-path" startOffset="0%">
-                    INNOVATION • RESEARCH • INTELLIGENCE • SUPPORT •
-                  </textPath>
-                </text>
-                
-                {/* Center IRIS in Hanson-inspired style */}
-                <text
-                  x="50"
-                  y="55"
-                  textAnchor="middle"
-                  className="fill-white font-black tracking-widest uppercase font-hanson"
-                  style={{ fontSize: '13px' }}
-                >
-                  iris
-                </text>
-              </svg>
-            </div>
+            <img
+              src="/logo.png"
+              alt="IRIS Logo"
+              className={`object-contain transition-all duration-300 group-hover:scale-105 ${
+                isScrolled ? 'w-7 h-7 sm:w-8 sm:h-8' : 'w-8 h-8 sm:w-9 sm:h-9'
+              }`}
+            />
           </button>
 
           {/* Desktop Nav Links - Poppins Font as requested */}
@@ -113,8 +85,8 @@ export default function Navbar({ onScrollToSection, onOpenProjects }: NavbarProp
             <button
               id="ongoing-projects-nav-btn"
               onClick={() => handleNavClick('events')}
-              className={`group flex items-center transition-all duration-300 bg-black hover:bg-zinc-900 text-white rounded-full font-semibold tracking-wide cursor-pointer focus:outline-none shadow-[0_4px_12px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_18px_rgba(0,0,0,0.25)] font-poppins ${
-                isScrolled ? 'px-4.5 py-2 text-[11px] gap-1.5' : 'px-6 py-3 text-xs gap-2.5'
+              className={`group flex items-center transition-all duration-300 bg-black hover:bg-zinc-900 text-white rounded-xl font-semibold tracking-wide cursor-pointer focus:outline-none shadow-[0_4px_12px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_18px_rgba(0,0,0,0.25)] font-poppins ${
+                isScrolled ? 'px-4 py-1.5 text-[11px] gap-1.5' : 'px-5 py-2 text-xs gap-2'
               }`}
             >
               Check Our Events
@@ -163,7 +135,7 @@ export default function Navbar({ onScrollToSection, onOpenProjects }: NavbarProp
               onClick={() => {
                 handleNavClick('events');
               }}
-              className="flex items-center justify-center gap-2 bg-black hover:bg-zinc-900 text-white w-full py-3.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-200 font-poppins"
+              className="flex items-center justify-center gap-2 bg-black hover:bg-zinc-900 text-white w-full py-3.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-200 font-poppins"
             >
               Check Our Events
               <ChevronRight className="w-4 h-4" />

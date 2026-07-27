@@ -61,8 +61,8 @@ export default function JoinUs() {
   };
 
   return (
-    <section id="join-us-section" className="relative py-20 px-6 lg:px-12 bg-iris-dark">
-      <div className="max-w-7xl mx-auto z-10 relative">
+    <section id="join-us-section" className="relative py-20 px-6 lg:px-12 bg-black">
+      <div className="max-w-[1400px] mx-auto z-10 relative">
         
         {/* Main CTA card - wide, thin, light purple gradient */}
         <motion.div
@@ -71,7 +71,7 @@ export default function JoinUs() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-gradient-to-br from-white via-[#f0ebff] to-[#e4dcff] rounded-3xl py-10 px-8 sm:px-16 text-center relative overflow-hidden w-full"
+          className="bg-gradient-to-br from-white via-[#f0ebff] to-[#e4dcff] rounded-3xl py-8 px-10 sm:px-20 text-center relative overflow-hidden w-full"
         >
           {/* Central contents */}
           <div className="relative z-10 flex flex-col items-center">
