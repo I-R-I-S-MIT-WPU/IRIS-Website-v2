@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Bell, FileText, CheckCircle2, Sparkles, X, Mail, Send, Award, Compass } from 'lucide-react';
+import { Bell, FileText, CheckCircle2, X, Mail, Send, Award, Compass } from 'lucide-react';
 
 export default function JoinUs() {
   const [isSubscribing, setIsSubscribing] = useState(false);
@@ -64,58 +64,47 @@ export default function JoinUs() {
     <section id="join-us-section" className="relative py-20 px-6 lg:px-12 bg-iris-dark">
       <div className="max-w-7xl mx-auto z-10 relative">
         
-        {/* Main Light Gradient Box matching the screenshot perfectly */}
+        {/* Main CTA card - wide, thin, light purple gradient */}
         <motion.div
           id="join-now-card"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-gradient-to-br from-white via-indigo-50/90 to-purple-100/80 rounded-3xl p-8 sm:p-14 text-center shadow-[0_15px_50px_rgba(144,97,249,0.15)] border border-white relative overflow-hidden"
+          className="bg-gradient-to-br from-white via-[#f0ebff] to-[#e4dcff] rounded-3xl py-10 px-8 sm:px-16 text-center relative overflow-hidden w-full"
         >
-          {/* Subtle background tech elements */}
-          <div className="absolute inset-0 opacity-40 mix-blend-overlay pointer-events-none">
-            <div className="absolute top-[-20%] left-[-20%] w-[50%] h-[50%] rounded-full bg-iris-purple/30 blur-[80px]" />
-            <div className="absolute bottom-[-20%] right-[-20%] w-[50%] h-[50%] rounded-full bg-violet-600/30 blur-[80px]" />
-          </div>
-
           {/* Central contents */}
-          <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
-            {/* Glowing mini element */}
-            <div className="w-10 h-10 rounded-full bg-iris-purple/10 flex items-center justify-center mb-4">
-              <Sparkles className="w-5 h-5 text-iris-purple animate-pulse" />
-            </div>
-
-            {/* Giant Heading matching screenshot */}
-            <h3 className="font-hanson font-bold text-3xl sm:text-5xl md:text-6xl text-zinc-950 tracking-tight leading-none mb-4 uppercase">
-              JOIN IRIS NOW!
+          <div className="relative z-10 flex flex-col items-center">
+            {/* Giant Heading - Funnel Display */}
+            <h3 className="font-funnel text-5xl sm:text-6xl md:text-7xl text-black tracking-tight leading-tight mb-4">
+              JOIN <span className="font-bold">IRIS</span><br />NOW!
             </h3>
-            
+
             {/* Subtext description */}
-            <p className="text-zinc-600 text-sm sm:text-base leading-relaxed mb-8 max-w-xl font-sans">
-              Become a part of the most active tech community. Work in team clusters, write hardware specifications, deploy edge kernels, and shape the boundaries of modern technology.
+            <p className="text-zinc-700 text-sm leading-relaxed mb-8 max-w-md font-sans">
+              We would love to connect with you & get your ideas into the club, Click below for more information
             </p>
 
-            {/* Subscribed and Action Buttons precisely mimicking screenshot capsules */}
-            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-              {/* Subscribe button */}
+            {/* Buttons with arrows */}
+            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+              {/* Contact Us button - outlined */}
               <button
                 id="subscribe-cta-btn"
                 onClick={() => { setIsSubscribing(true); setIsApplying(false); }}
-                className="group flex items-center justify-center gap-2 bg-transparent hover:bg-zinc-100 text-zinc-900 border border-zinc-300 px-8 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer shadow-sm"
+                className="group flex items-center justify-center gap-3 bg-transparent hover:bg-zinc-100 text-black border-2 border-zinc-900 px-10 py-3.5 rounded-xl text-base font-medium transition-all duration-200 cursor-pointer"
               >
-                <Bell className="w-3.5 h-3.5 text-zinc-700" />
-                Subscribe
+                Contact Us
+                <span className="text-lg">›</span>
               </button>
 
-              {/* Apply Now button */}
+              {/* Join Us Now button - filled dark */}
               <button
                 id="apply-cta-btn"
                 onClick={() => { setIsApplying(true); setIsSubscribing(false); }}
-                className="group flex items-center justify-center gap-2 bg-zinc-950 hover:bg-iris-purple text-white px-8 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer shadow-[0_4px_15px_rgba(0,0,0,0.15)] hover:shadow-[0_4px_15px_rgba(144,97,249,0.3)]"
+                className="group flex items-center justify-center gap-3 bg-zinc-950 hover:bg-zinc-800 text-white px-10 py-3.5 rounded-xl text-base font-medium transition-all duration-300 cursor-pointer"
               >
-                <FileText className="w-3.5 h-3.5" />
-                Apply Now
+                Join Us Now
+                <span className="text-lg">›</span>
               </button>
             </div>
           </div>

@@ -27,138 +27,189 @@ export default function Footer({ onScrollToSection, onOpenProjects }: FooterProp
   };
 
   return (
-    <footer id="footer-section" className="bg-[#050507] pt-20 pb-8 px-6 lg:px-12 border-t border-white/[0.02] relative overflow-hidden text-left">
-      {/* Background glow shadow */}
+    <footer id="footer-section" className="bg-[#0a0a0c] pt-20 pb-8 px-6 lg:px-12 border-t border-transparent relative overflow-hidden text-left">
+      {/* Radial purple glow from bottom - wide, flat, bright center */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute bottom-[-20%] left-1/2 -translate-x-1/2 w-[500px] h-[200px] rounded-full bg-iris-purple/10 blur-[80px]" />
+        <div className="absolute -bottom-[200px] left-1/2 -translate-x-1/2 w-[1200px] h-[400px] rounded-full bg-[#6d28d9] opacity-80 blur-[120px]" />
+        <div className="absolute -bottom-[180px] left-1/2 -translate-x-1/2 w-[600px] h-[350px] rounded-full bg-[#c084fc] opacity-90 blur-[80px]" />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8 pb-16">
-          
-          {/* Left Block: Logo, description, address coordinates */}
-          <div className="md:col-span-5 space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full border border-white/60 flex items-center justify-center">
-                <span className="text-[10px] font-display font-light text-white lowercase">iris</span>
-              </div>
-              <span className="font-display font-bold tracking-widest text-white text-sm">I.R.I.S.</span>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12 pb-16">
+
+          {/* Left Block: Logo and SOCIAL links */}
+          <div className="md:col-span-3 space-y-8">
+            <div className="flex items-center gap-2">
+              <img src="/logo.png" alt="IRIS Logo" className="w-16 h-16 object-contain" />
             </div>
 
-            <p className="text-gray-500 text-xs sm:text-sm leading-relaxed max-w-sm font-sans">
-              Decentralized hardware engineering, low-latency spatial mechanics, and neural database systems. Shaping tech development under a secure research core.
-            </p>
-
-            <div className="text-xs font-mono text-gray-600 space-y-1 pt-2">
-              <p>PHYSICAL LAB: Sector 7, Robotics Research Bay</p>
-              <p>LOCATIVE COORDS: 12.9716° N, 77.5946° E</p>
-              <p>SECURE EMAIL: contact@iris-intelligence-system.org</p>
+            <div className="space-y-3">
+              <h5 className="font-sans text-xs font-bold text-white uppercase tracking-wider">SOCIAL</h5>
+              <ul className="space-y-2 text-sm font-sans text-gray-400">
+                <li>
+                  <a href="#github" className="hover:text-iris-purple transition-colors">
+                    GITHUB
+                  </a>
+                </li>
+                <li>
+                  <a href="#linkedin" className="hover:text-iris-purple transition-colors">
+                    LINKEDIN
+                  </a>
+                </li>
+                <li>
+                  <a href="#instagram" className="hover:text-iris-purple transition-colors">
+                    INSTAGRAM
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
 
-          {/* Spacer block */}
-          <div className="hidden md:block md:col-span-1" />
+          {/* Right side: Three columns */}
+          <div className="md:col-span-9 grid grid-cols-1 sm:grid-cols-3 gap-10">
 
-          {/* Middle links sections */}
-          <div className="md:col-span-6 grid grid-cols-2 sm:grid-cols-3 gap-8">
-            
-            {/* Useful Links */}
-            <div className="space-y-4">
-              <h5 className="font-mono text-[10px] font-bold text-gray-400 tracking-[0.2em] uppercase">USEFUL LINKS</h5>
-              <ul className="space-y-2.5 text-xs font-sans text-gray-500">
+            {/* EVENTS & CONTENT */}
+            <div className="space-y-3">
+              <h5 className="font-sans text-xs font-bold text-white uppercase tracking-wider">EVENTS & CONTENT</h5>
+              <ul className="space-y-2.5 text-sm font-sans text-gray-400">
                 <li>
                   <a
-                    href="#about-us"
-                    onClick={(e) => handleLinkClick('about-us', e)}
-                    className="hover:text-iris-purple hover:pl-1 transition-all"
+                    href="#events"
+                    onClick={(e) => handleLinkClick('events', e)}
+                    className="hover:text-iris-purple transition-colors"
                   >
-                    About Cluster
+                    Event Calendar
                   </a>
                 </li>
                 <li>
                   <a
                     href="#writers-hub"
                     onClick={(e) => handleLinkClick('writers-hub', e)}
-                    className="hover:text-iris-purple hover:pl-1 transition-all"
+                    className="hover:text-iris-purple transition-colors"
                   >
-                    Research Hub
+                    Blogs
                   </a>
                 </li>
                 <li>
                   <a
-                    href="#events"
-                    onClick={(e) => handleLinkClick('events', e)}
-                    className="hover:text-iris-purple hover:pl-1 transition-all"
+                    href="#writers-hub"
+                    onClick={(e) => handleLinkClick('writers-hub', e)}
+                    className="hover:text-iris-purple transition-colors"
                   >
-                    Active Seminars
+                    Newsletter
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#projects"
+                    onClick={(e) => handleLinkClick('projects', e)}
+                    className="hover:text-iris-purple transition-colors"
+                  >
+                    Research Papers
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#about-us"
+                    onClick={(e) => handleLinkClick('about-us', e)}
+                    className="hover:text-iris-purple transition-colors"
+                  >
+                    About Us
                   </a>
                 </li>
               </ul>
             </div>
 
-            {/* Projects list */}
-            <div className="space-y-4">
-              <h5 className="font-mono text-[10px] font-bold text-gray-400 tracking-[0.2em] uppercase">PROJECTS</h5>
-              <ul className="space-y-2.5 text-xs font-sans text-gray-500">
+            {/* PROJECTS */}
+            <div className="space-y-3">
+              <h5 className="font-sans text-xs font-bold text-white uppercase tracking-wider">PROJECTS</h5>
+              <ul className="space-y-2.5 text-sm font-sans text-gray-400">
                 <li>
                   <a
                     href="#projects"
                     onClick={(e) => handleLinkClick('projects', e)}
-                    className="hover:text-iris-purple hover:pl-1 transition-all"
+                    className="hover:text-iris-purple transition-colors"
                   >
-                    Soteria Defense
+                    Soteria
                   </a>
                 </li>
                 <li>
                   <a
                     href="#projects"
                     onClick={(e) => handleLinkClick('projects', e)}
-                    className="hover:text-iris-purple hover:pl-1 transition-all"
+                    className="hover:text-iris-purple transition-colors"
                   >
-                    Vyas Relational
+                    Greenthink
                   </a>
                 </li>
                 <li>
                   <a
                     href="#projects"
                     onClick={(e) => handleLinkClick('projects', e)}
-                    className="hover:text-iris-purple hover:pl-1 transition-all"
+                    className="hover:text-iris-purple transition-colors"
                   >
-                    Tarzan Swarm
+                    Vyas Management Platform
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#projects"
+                    onClick={(e) => handleLinkClick('projects', e)}
+                    className="hover:text-iris-purple transition-colors"
+                  >
+                    Supremix
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#projects"
+                    onClick={(e) => handleLinkClick('projects', e)}
+                    className="hover:text-iris-purple transition-colors"
+                  >
+                    GRID
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#projects"
+                    onClick={(e) => handleLinkClick('projects-all', e)}
+                    className="hover:text-iris-purple transition-colors"
+                  >
+                    TARZAN
                   </a>
                 </li>
               </ul>
             </div>
 
-            {/* Resources list */}
-            <div className="space-y-4 col-span-2 sm:col-span-1">
-              <h5 className="font-mono text-[10px] font-bold text-gray-400 tracking-[0.2em] uppercase">RESOURCES</h5>
-              <ul className="space-y-2.5 text-xs font-sans text-gray-500">
+            {/* POLICIES */}
+            <div className="space-y-3">
+              <h5 className="font-sans text-xs font-bold text-white uppercase tracking-wider">POLICIES</h5>
+              <ul className="space-y-2.5 text-sm font-sans text-gray-400">
                 <li>
                   <a
-                    href="#api"
-                    onClick={(e) => { e.preventDefault(); showToast('I.R.I.S. Core API Specification is restricted to authenticated researchers.'); }}
-                    className="hover:text-iris-purple hover:pl-1 transition-all"
+                    href="#terms"
+                    onClick={(e) => { e.preventDefault(); showToast('Terms & Conditions page under construction'); }}
+                    className="hover:text-iris-purple transition-colors"
                   >
-                    API Spec Sheets
+                    Terms & Condition
                   </a>
                 </li>
                 <li>
                   <a
-                    href="#github"
-                    onClick={(e) => { e.preventDefault(); showToast('Core repositories are stored on encrypted offline servers.'); }}
-                    className="hover:text-iris-purple hover:pl-1 transition-all"
+                    href="#privacy"
+                    onClick={(e) => { e.preventDefault(); showToast('Privacy Policy page under construction'); }}
+                    className="hover:text-iris-purple transition-colors"
                   >
-                    Encrypted Repos
+                    Privacy Policy
                   </a>
                 </li>
                 <li>
                   <a
-                    href="#whitepaper"
-                    onClick={(e) => { e.preventDefault(); showToast('Whitepaper is available inside the Writers Hub.'); }}
-                    className="hover:text-iris-purple hover:pl-1 transition-all"
+                    href="#refund"
+                    onClick={(e) => { e.preventDefault(); showToast('Refund Policy page under construction'); }}
+                    className="hover:text-iris-purple transition-colors"
                   >
-                    Lab Whitepapers
+                    Refund Policy
                   </a>
                 </li>
               </ul>
@@ -167,30 +218,22 @@ export default function Footer({ onScrollToSection, onOpenProjects }: FooterProp
           </div>
         </div>
 
-        {/* Far bottom elements matching the screenshot precisamente */}
-        <div className="pt-8 border-t border-white/[0.03] flex flex-col sm:flex-row items-center justify-between gap-4 relative">
-          
-          {/* Subtle line styling with bright violet neon highlights */}
-          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-iris-purple/30 to-transparent" />
+        {/* Far bottom elements with horizontal line */}
+        <div className="relative">
+          {/* Solid white line */}
+          <div className="w-full h-[1px] bg-white/30 mb-6" />
 
-          {/* Copyright description */}
-          <div className="text-[10px] font-mono text-zinc-600 select-none">
-            &copy; {currentYear} I.R.I.S. LAB. ALL RIGHTS RESERVED. UNRESTRICTED ACCESS IN PREVIEW_OS.
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            {/* Left side text */}
+            <div className="text-sm font-sans text-gray-300 select-none">
+              iris@mitwpu.edu.in
+            </div>
+
+            {/* Right side text */}
+            <div className="text-sm font-sans text-gray-300 select-none">
+              © IRIS MIT-WPU {currentYear}
+            </div>
           </div>
-
-          {/* Social icons */}
-          <div className="flex items-center gap-4 text-zinc-600">
-            <a href="#github" className="hover:text-white transition-colors" aria-label="GitHub">
-              <Github className="w-4 h-4" />
-            </a>
-            <a href="#mail" className="hover:text-white transition-colors" aria-label="Email">
-              <Mail className="w-4 h-4" />
-            </a>
-            <a href="#web" className="hover:text-white transition-colors" aria-label="Web">
-              <Globe className="w-4 h-4" />
-            </a>
-          </div>
-
         </div>
       </div>
 
