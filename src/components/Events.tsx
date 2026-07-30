@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Calendar, Clock, MapPin, Users, ChevronRight, X, Sparkles, CheckCircle, Ticket } from 'lucide-react';
+
 import { Event, INITIAL_EVENTS } from '../types';
 
 export default function Events() {
@@ -67,98 +68,110 @@ export default function Events() {
 
   return (
     <section id="events" className="relative py-24 px-6 lg:px-12 bg-black overflow-hidden">
-      {/* Background Glowing Spotlight Blobs matching the reference image precisely using exact color codes */}
-      <div className="absolute inset-0 z-0 pointer-events-none bg-[#030205] overflow-hidden">
-        {/* Base soft dark ambient backdrop using #2C195C */}
-        <div className="absolute top-[10%] left-[5%] w-[90%] h-[80%] rounded-full bg-[#2C195C] opacity-90 blur-[150px] pointer-events-none" />
-        
-        {/* Mid-tone purple structures using #5630A7 */}
-        <div className="absolute top-[20%] left-[20%] w-[60%] h-[55%] rounded-full bg-[#5630A7] opacity-80 blur-[130px] pointer-events-none" />
-        
-        {/* Bright violet spotlights using #7449DA */}
-        <div className="absolute top-[25%] left-[25%] w-[45%] h-[40%] rounded-full bg-[#7449DA] opacity-85 blur-[110px] pointer-events-none" />
-        
-        {/* Lavender highlights using #A696EF */}
-        <div className="absolute top-[30%] left-[30%] w-[35%] h-[30%] rounded-full bg-[#A696EF] opacity-75 blur-[90px] pointer-events-none" />
-        
-        {/* Bright central mist using #DDDAFA at exactly 66.67% opacity */}
-        <div className="absolute top-[35%] left-[35%] w-[25%] h-[20%] rounded-full bg-[#DDDAFA]/65 blur-[70px] pointer-events-none" />
-
-        {/* Soft edge radial vignette overlay to keep bounds elegantly darkened */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,#000000_95%)] opacity-95 pointer-events-none" />
+      {/* Background glow */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[5%] left-[-15%] w-[700px] h-[700px] rounded-full bg-purple-600/30 blur-[150px]" />
+        <div className="absolute top-[40%] right-[-10%] w-[500px] h-[500px] rounded-full bg-fuchsia-500/20 blur-[130px]" />
+        <div className="absolute bottom-[10%] left-[20%] w-[600px] h-[600px] rounded-full bg-violet-600/25 blur-[140px]" />
+        <div className="absolute top-[20%] left-[40%] w-[400px] h-[400px] rounded-full bg-iris-purple/15 blur-[100px]" />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Title Block */}
-        <div className="text-center mb-16">
-          <motion.h2
-            id="events-title"
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="font-hanson font-bold text-4xl sm:text-5xl md:text-6xl tracking-[0.06em] text-white uppercase"
-          >
-            OUR EVENTS
-          </motion.h2>
-          <div className="w-16 h-[2px] bg-iris-purple mx-auto mt-4" />
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-14"
+        >
+          <p className="text-iris-purple text-xs font-semibold uppercase tracking-widest mb-4 font-sans">Upcoming</p>
+          <h2 className="font-funnel font-bold text-5xl sm:text-6xl md:text-7xl text-white tracking-tight">
+            Events
+          </h2>
+        </motion.div>
 
-        {/* Timeline Stack matching screenshot style */}
-        <div className="max-w-4xl mx-auto flex flex-col gap-6 relative">
-          {/* Vertical timeline connector line */}
-          <div className="absolute left-[20px] sm:left-[32px] top-4 bottom-4 w-[2px] bg-white/5 pointer-events-none" />
+        {/* Timeline - one sided */}
+        <div className="relative pl-8 sm:pl-12 md:pl-16">
+          {/* Vertical line */}
+          <div className="absolute left-3 sm:left-5 md:left-7 top-0 bottom-0 w-px bg-gradient-to-b from-iris-purple/50 via-white/10 to-transparent" />
 
           {events.map((event, idx) => (
             <motion.div
               key={event.id}
               id={`event-row-${event.id}`}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: idx * 0.1, duration: 0.5 }}
-              onClick={() => handleRegisterClick(event)}
-              className="group bg-iris-card border border-iris-border rounded-xl p-5 sm:p-7 flex items-center gap-4 sm:gap-6 hover:border-iris-purple/40 hover:shadow-[0_2px_20px_rgba(144,97,249,0.08)] transition-all duration-300 cursor-pointer relative z-10 text-left"
+              transition={{ delay: idx * 0.15, duration: 0.5 }}
+              className="relative mb-14 last:mb-0"
             >
-              {/* Left timeline circle dot indicator */}
-              <div className="flex-shrink-0 w-10 h-10 sm:w-16 sm:h-16 rounded-full border border-white/5 bg-zinc-950/80 flex items-center justify-center group-hover:border-iris-purple/50 group-hover:shadow-[0_0_12px_rgba(144,97,249,0.3)] transition-all">
-                <Calendar className="w-4 h-4 sm:w-6 sm:h-6 text-iris-purple" />
+              {/* Timeline dot + connector */}
+              <div className="absolute -left-8 sm:-left-12 md:-left-16 top-8 flex items-center">
+                <div className="w-3.5 h-3.5 rounded-full bg-iris-purple shadow-[0_0_10px_rgba(144,97,249,0.5)] z-10" />
+                <div className="w-5 sm:w-9 md:w-13 h-px bg-iris-purple/30" />
               </div>
 
-              {/* Event Info Details */}
-              <div className="flex-grow min-w-0">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 mb-2">
-                  <h3 className="font-display font-semibold text-base sm:text-xl text-white group-hover:text-iris-purple transition-colors leading-snug">
+              {/* Date label */}
+              <div className="mb-3">
+                <span className="text-iris-purple text-xs font-semibold uppercase tracking-wider font-sans">{event.date}</span>
+              </div>
+
+              {/* Card */}
+              <div
+                onClick={() => handleRegisterClick(event)}
+                className="group bg-white rounded-2xl p-7 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer"
+              >
+                {/* Header row */}
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                  <h3 className="font-funnel font-bold text-2xl sm:text-3xl text-zinc-900 group-hover:text-iris-purple transition-colors leading-tight">
                     {event.title}
                   </h3>
-                  <span className="font-mono text-[9px] font-bold text-gray-500 uppercase tracking-widest bg-zinc-900 border border-white/5 px-2.5 py-1 rounded-md sm:self-start whitespace-nowrap">
-                    Seats: {event.spotsLeft > 0 ? `${event.spotsLeft} Left` : 'FULLY BOOKED'}
+                  <span className="shrink-0 text-[11px] font-semibold text-iris-purple bg-iris-purple/10 border border-iris-purple/20 px-3 py-1 rounded-lg uppercase tracking-wide">
+                    {event.spotsLeft > 0 ? `${event.spotsLeft} spots left` : 'Fully Booked'}
                   </span>
                 </div>
 
-                <p className="text-gray-400 text-xs sm:text-sm leading-relaxed mb-4 font-sans line-clamp-2">
+                {/* Description */}
+                <p className="text-zinc-600 text-sm sm:text-base leading-relaxed font-sans mb-6">
                   {event.description}
                 </p>
 
-                {/* Sub Metadata parameters */}
-                <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-mono text-gray-500 border-t border-white/5 pt-3">
-                  <div className="flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-gray-600" />
-                    <span>{event.time}</span>
+                {/* Details grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 py-5 border-y border-zinc-100">
+                  <div className="flex items-start gap-3">
+                    <Clock className="w-4 h-4 text-iris-purple mt-0.5 shrink-0" />
+                    <div>
+                      <p className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold mb-0.5">Time</p>
+                      <p className="text-zinc-900 text-sm font-sans">{event.time}</p>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-gray-600" />
-                    <span>{event.location}</span>
+                  <div className="flex items-start gap-3">
+                    <MapPin className="w-4 h-4 text-iris-purple mt-0.5 shrink-0" />
+                    <div>
+                      <p className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold mb-0.5">Venue</p>
+                      <p className="text-zinc-900 text-sm font-sans">{event.location}</p>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <Users className="w-3.5 h-3.5 text-gray-600" />
-                    <span>{event.speaker}</span>
+                  <div className="flex items-start gap-3">
+                    <Users className="w-4 h-4 text-iris-purple mt-0.5 shrink-0" />
+                    <div>
+                      <p className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold mb-0.5">Speaker</p>
+                      <p className="text-zinc-900 text-sm font-sans">{event.speaker}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Action arrow button on right */}
-              <div className="flex-shrink-0 p-2 text-gray-600 group-hover:text-white transition-colors">
-                <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-1 transition-transform" />
+                {/* Footer */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4 text-zinc-400" />
+                    <span className="text-zinc-500 text-xs font-sans">{event.date}</span>
+                  </div>
+                  <button className="flex items-center gap-2 bg-zinc-900 hover:bg-iris-purple text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-all">
+                    Register Now
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             </motion.div>
           ))}

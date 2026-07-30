@@ -9,6 +9,7 @@ interface Blog {
   content: string;
   author: string;
   tag: string;
+  image: string;
 }
 
 export default function WritersHub() {
@@ -22,6 +23,7 @@ export default function WritersHub() {
       content: 'This paper explores the intricate mechanisms of autonomous navigation using simultaneous localization and mapping (SLAM). In rapidly evolving urban environments, our drones must handle dynamic obstacles, GPS-denied zones, and real-time replanning. We detail our approach using optical flow sensors paired with LiDAR point clouds to achieve centimeter-level accuracy in positioning.',
       author: 'Siddharth Roy',
       tag: 'Avionics',
+      image: 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?q=80&w=800&auto=format&fit=crop',
     },
     {
       id: 'edge-ai',
@@ -30,6 +32,7 @@ export default function WritersHub() {
       content: 'Deploying AI models at the edge presents unique challenges — limited memory, power constraints, and the need for real-time inference. This article covers our pipeline for quantizing PyTorch models to INT8, optimizing them with TensorFlow Lite Micro, and deploying on STM32 and ESP32 platforms for our robotics projects.',
       author: 'Vikram Mehta',
       tag: 'AI/ML',
+      image: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=800&auto=format&fit=crop',
     },
     {
       id: 'swarm-comms',
@@ -38,11 +41,17 @@ export default function WritersHub() {
       content: 'Traditional multi-agent systems rely on a central coordinator — a single point of failure. Our Tarzan project implements a fully decentralized consensus protocol using low-power RF mesh networks. Each agent broadcasts its state vector and receives neighbor states, achieving emergent coordination through simple local rules that produce complex global behavior.',
       author: 'Alex Rivera',
       tag: 'Robotics',
+      image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop',
     },
   ];
 
   return (
     <section id="writers-hub" className="relative py-28 px-4 sm:px-8 md:px-12 lg:px-20 bg-black overflow-hidden">
+      {/* Ambient glow */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute top-[30%] left-[-8%] w-[450px] h-[450px] rounded-full bg-violet-600/8 blur-[140px]" />
+        <div className="absolute bottom-[20%] right-[-5%] w-[350px] h-[350px] rounded-full bg-blue-600/6 blur-[120px]" />
+      </div>
       <div className="max-w-7xl mx-auto relative z-10">
 
         {/* Header */}
@@ -67,27 +76,40 @@ export default function WritersHub() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
-              className="bg-gradient-to-br from-[#f5f3ff] to-white rounded-3xl p-7 flex flex-col justify-between group"
+              className="bg-zinc-900 border border-white/5 rounded-3xl overflow-hidden flex flex-col group hover:border-iris-purple/20 transition-all"
             >
-              <div>
-                <span className="text-[11px] font-semibold text-iris-purple uppercase tracking-widest font-sans">{blog.tag}</span>
-                <h3 className="font-sans font-semibold text-zinc-900 text-lg mt-3 mb-3 leading-tight">
-                  {blog.title}
-                </h3>
-                <p className="text-zinc-500 text-sm leading-relaxed font-sans">
-                  {blog.excerpt}
-                </p>
+              {/* Image */}
+              <div className="h-44 overflow-hidden">
+                <img
+                  src={blog.image}
+                  alt={blog.title}
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
               </div>
 
-              <div className="mt-6 pt-4 border-t border-zinc-200 flex items-center justify-between">
-                <span className="text-xs text-zinc-400 font-sans">By {blog.author}</span>
-                <button
-                  onClick={() => setSelectedBlog(blog)}
-                  className="flex items-center gap-1.5 text-sm font-medium text-zinc-900 hover:text-iris-purple transition-colors cursor-pointer"
-                >
-                  Read More
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+              {/* Content */}
+              <div className="p-6 flex flex-col flex-grow justify-between">
+                <div>
+                  <span className="text-[11px] font-semibold text-iris-purple uppercase tracking-widest font-sans">{blog.tag}</span>
+                  <h3 className="font-sans font-semibold text-white text-lg mt-2 mb-3 leading-tight group-hover:text-iris-purple transition-colors">
+                    {blog.title}
+                  </h3>
+                  <p className="text-gray-400 text-sm leading-relaxed font-sans line-clamp-3">
+                    {blog.excerpt}
+                  </p>
+                </div>
+
+                <div className="mt-5 pt-4 border-t border-white/5 flex items-center justify-between">
+                  <span className="text-xs text-gray-500 font-sans">By {blog.author}</span>
+                  <button
+                    onClick={() => setSelectedBlog(blog)}
+                    className="flex items-center gap-1.5 text-sm font-medium text-iris-purple hover:text-white transition-colors cursor-pointer"
+                  >
+                    Read More
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
             </motion.div>
           ))}
@@ -119,17 +141,27 @@ export default function WritersHub() {
                 <X className="w-4 h-4" />
               </button>
 
-              <div className="overflow-y-auto flex-grow p-8 sm:p-10">
-                <span className="text-xs font-semibold text-iris-purple uppercase tracking-widest font-sans">
-                  {selectedBlog.tag}
-                </span>
-                <h3 className="font-sans font-bold text-2xl sm:text-3xl text-white mt-3 mb-2 leading-tight">
-                  {selectedBlog.title}
-                </h3>
-                <p className="text-sm text-gray-400 mb-8 font-sans">By {selectedBlog.author}</p>
-                <p className="text-zinc-300 font-sans leading-relaxed text-base">
-                  {selectedBlog.content}
-                </p>
+              <div className="overflow-y-auto flex-grow">
+                <div className="h-56 w-full">
+                  <img
+                    src={selectedBlog.image}
+                    alt={selectedBlog.title}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-8 sm:p-10">
+                  <span className="text-xs font-semibold text-iris-purple uppercase tracking-widest font-sans">
+                    {selectedBlog.tag}
+                  </span>
+                  <h3 className="font-sans font-bold text-2xl sm:text-3xl text-white mt-3 mb-2 leading-tight">
+                    {selectedBlog.title}
+                  </h3>
+                  <p className="text-sm text-gray-400 mb-8 font-sans">By {selectedBlog.author}</p>
+                  <p className="text-zinc-300 font-sans leading-relaxed text-base">
+                    {selectedBlog.content}
+                  </p>
+                </div>
               </div>
             </motion.div>
           </div>

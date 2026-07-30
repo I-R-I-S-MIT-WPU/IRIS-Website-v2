@@ -61,7 +61,7 @@ export default function JoinUs() {
   };
 
   return (
-    <section id="join-us-section" className="relative py-20 px-6 lg:px-12 bg-black">
+    <section id="join-us-section" className="relative py-20 px-6 lg:px-12 bg-black overflow-hidden">
       <div className="max-w-[1400px] mx-auto z-10 relative">
         
         {/* Main CTA card - wide, thin, light purple gradient */}
@@ -71,40 +71,30 @@ export default function JoinUs() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-gradient-to-br from-white via-[#f0ebff] to-[#e4dcff] rounded-3xl py-8 px-10 sm:px-20 text-center relative overflow-hidden w-full"
+          className="rounded-3xl py-20 px-8 sm:px-16 text-center relative overflow-hidden w-full"
+          style={{ background: 'radial-gradient(ellipse at 50% 35%, #ffffff 0%, #f3eeff 30%, #e0d4ff 60%, #c9b8ff 100%)' }}
         >
-          {/* Central contents */}
           <div className="relative z-10 flex flex-col items-center">
-            {/* Giant Heading - Funnel Display */}
-            <h3 className="font-funnel text-5xl sm:text-6xl md:text-7xl text-black tracking-tight leading-tight mb-4">
-              JOIN <span className="font-bold">IRIS</span><br />NOW!
+            <h3 className="font-funnel text-4xl sm:text-5xl text-black tracking-tight leading-none mb-1.5">
+              JOIN <span className="font-bold">IRIS</span> NOW!
             </h3>
-
-            {/* Subtext description */}
-            <p className="text-zinc-700 text-sm leading-relaxed mb-8 max-w-md font-sans">
-              We would love to connect with you & get your ideas into the club, Click below for more information
+            <p className="text-zinc-600 text-xs leading-relaxed mb-4 max-w-xs font-sans">
+              Connect with us & bring your ideas to the club
             </p>
-
-            {/* Buttons with arrows */}
-            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-              {/* Contact Us button - outlined */}
+            <div className="flex gap-3">
               <button
                 id="subscribe-cta-btn"
                 onClick={() => { setIsSubscribing(true); setIsApplying(false); }}
-                className="group flex items-center justify-center gap-3 bg-transparent hover:bg-zinc-100 text-black border-2 border-zinc-900 px-10 py-3.5 rounded-xl text-base font-medium transition-all duration-200 cursor-pointer"
+                className="flex items-center gap-1.5 bg-transparent hover:bg-white/50 text-black border-2 border-zinc-900 px-6 py-2 rounded-xl text-sm font-medium transition-all cursor-pointer"
               >
-                Contact Us
-                <span className="text-lg">›</span>
+                Contact Us <span>›</span>
               </button>
-
-              {/* Join Us Now button - filled dark */}
               <button
                 id="apply-cta-btn"
                 onClick={() => { setIsApplying(true); setIsSubscribing(false); }}
-                className="group flex items-center justify-center gap-3 bg-zinc-950 hover:bg-zinc-800 text-white px-10 py-3.5 rounded-xl text-base font-medium transition-all duration-300 cursor-pointer"
+                className="flex items-center gap-1.5 bg-zinc-950 hover:bg-zinc-800 text-white px-6 py-2 rounded-xl text-sm font-medium transition-all cursor-pointer"
               >
-                Join Us Now
-                <span className="text-lg">›</span>
+                Join Us Now <span>›</span>
               </button>
             </div>
           </div>
