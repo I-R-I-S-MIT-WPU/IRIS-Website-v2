@@ -1,10 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Calendar, Clock, MapPin, Users, ChevronRight, X, Sparkles, CheckCircle, Ticket } from 'lucide-react';
-import { INITIAL_EVENTS, Event } from '../types';
+import { INITIAL_EVENTS } from '../types';
+import { getEvents } from '../lib/db';
+
+interface EventRow {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  time: string;
+  location: string;
+  speaker: string;
+  spots_left: number;
+}
 
 export default function EventsPage() {
-  const [events, setEvents] = useState<Event[]>(INITIAL_EVENTS);
+  const [events, setEvents] = useState<any[]>([]);
+
+  useEffect(() => {
+    getEvents(true).then((data: EventRow[]) => {
+      if (data?.length) {
+        setEvents(data as any);
+      } else {
+        setEvents(INITIAL_EVENTS.map(e => ({ ...e, spots_left: e.spotsLeft })));
+      }
+    }).catch(() => {
+      setEvents(INITIAL_EVENTS.map(e => ({ ...e, spots_left: e.spotsLeft })));
+    });
+  }, []);
   const [registeringEvent, setRegisteringEvent] = useState<Event | null>(null);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -56,7 +80,7 @@ export default function EventsPage() {
                   <p className="text-zinc-600 text-sm leading-relaxed">{event.description}</p>
                 </div>
                 <span className="shrink-0 text-[11px] font-semibold text-iris-purple bg-iris-purple/10 border border-iris-purple/20 px-3 py-1 rounded-lg uppercase">
-                  {event.spotsLeft > 0 ? `${event.spotsLeft} spots` : 'Full'}
+                  {((event as any).spots_left ?? (event as any).spotsLeft) > 0 ? `${(event as any).spots_left ?? (event as any).spotsLeft} spots` : 'Full'}
                 </span>
               </div>
 

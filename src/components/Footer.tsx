@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Github, Mail, Globe, Cpu, Award, X, Bell } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { X, Bell } from 'lucide-react';
 
 interface FooterProps {
   onScrollToSection: (sectionId: string) => void;
@@ -9,26 +10,16 @@ interface FooterProps {
 export default function Footer({ onScrollToSection, onOpenProjects }: FooterProps) {
   const currentYear = new Date().getFullYear();
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 4000);
-  };
-
-  const handleLinkClick = (id: string, e: React.MouseEvent) => {
-    e.preventDefault();
-    if (id === 'projects-all') {
-      onOpenProjects();
-    } else {
-      onScrollToSection(id);
-    }
+    setTimeout(() => setToastMessage(null), 4000);
   };
 
   return (
     <footer id="footer-section" className="bg-black pt-20 pb-8 px-6 lg:px-12 border-t border-transparent relative overflow-hidden text-left">
-      {/* Radial purple glow - wide, bright, resolves to black fast */}
+      {/* Radial purple glow */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute bottom-[-600px] left-1/2 -translate-x-1/2 w-[2000px] h-[700px] rounded-full bg-[#9333ea] opacity-90 blur-[100px]" />
         <div className="absolute bottom-[-580px] left-1/2 -translate-x-1/2 w-[1000px] h-[650px] rounded-full bg-[#c084fc] opacity-80 blur-[80px]" />
@@ -37,7 +28,7 @@ export default function Footer({ onScrollToSection, onOpenProjects }: FooterProp
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12 pb-16">
 
-          {/* Left Block: Logo and SOCIAL links */}
+          {/* Left Block: Logo and Social */}
           <div className="md:col-span-3 space-y-8">
             <div className="flex items-center gap-2">
               <img src="/logo.png" alt="IRIS Logo" className="w-16 h-16 object-contain" />
@@ -47,17 +38,17 @@ export default function Footer({ onScrollToSection, onOpenProjects }: FooterProp
               <h5 className="font-sans text-xs font-bold text-white uppercase tracking-wider">SOCIAL</h5>
               <ul className="space-y-2 text-sm font-sans text-gray-400">
                 <li>
-                  <a href="#github" className="hover:text-iris-purple transition-colors">
+                  <a href="https://github.com/iris-mitwpu" target="_blank" rel="noopener noreferrer" className="hover:text-iris-purple transition-colors">
                     GITHUB
                   </a>
                 </li>
                 <li>
-                  <a href="#linkedin" className="hover:text-iris-purple transition-colors">
+                  <a href="https://linkedin.com/company/iris-mitwpu" target="_blank" rel="noopener noreferrer" className="hover:text-iris-purple transition-colors">
                     LINKEDIN
                   </a>
                 </li>
                 <li>
-                  <a href="#instagram" className="hover:text-iris-purple transition-colors">
+                  <a href="https://instagram.com/iris.mitwpu" target="_blank" rel="noopener noreferrer" className="hover:text-iris-purple transition-colors">
                     INSTAGRAM
                   </a>
                 </li>
@@ -68,115 +59,54 @@ export default function Footer({ onScrollToSection, onOpenProjects }: FooterProp
           {/* Right side: Three columns */}
           <div className="md:col-span-9 grid grid-cols-1 sm:grid-cols-3 gap-10">
 
-            {/* EVENTS & CONTENT */}
+            {/* EXPLORE */}
             <div className="space-y-3">
-              <h5 className="font-sans text-xs font-bold text-white uppercase tracking-wider">EVENTS & CONTENT</h5>
+              <h5 className="font-sans text-xs font-bold text-white uppercase tracking-wider">EXPLORE</h5>
               <ul className="space-y-2.5 text-sm font-sans text-gray-400">
                 <li>
-                  <a
-                    href="#events"
-                    onClick={(e) => handleLinkClick('events', e)}
-                    className="hover:text-iris-purple transition-colors"
-                  >
-                    Event Calendar
-                  </a>
+                  <Link to="/events" className="hover:text-iris-purple transition-colors">Events</Link>
                 </li>
                 <li>
-                  <a
-                    href="#writers-hub"
-                    onClick={(e) => handleLinkClick('writers-hub', e)}
-                    className="hover:text-iris-purple transition-colors"
-                  >
-                    Blogs
-                  </a>
+                  <Link to="/blog" className="hover:text-iris-purple transition-colors">Blogs</Link>
                 </li>
                 <li>
-                  <a
-                    href="#writers-hub"
-                    onClick={(e) => handleLinkClick('writers-hub', e)}
-                    className="hover:text-iris-purple transition-colors"
-                  >
-                    Newsletter
-                  </a>
+                  <Link to="/research" className="hover:text-iris-purple transition-colors">Research</Link>
                 </li>
                 <li>
-                  <a
-                    href="#projects"
-                    onClick={(e) => handleLinkClick('projects', e)}
-                    className="hover:text-iris-purple transition-colors"
-                  >
-                    Research Papers
-                  </a>
+                  <Link to="/projects" className="hover:text-iris-purple transition-colors">Projects</Link>
                 </li>
                 <li>
-                  <a
-                    href="#about-us"
-                    onClick={(e) => handleLinkClick('about-us', e)}
-                    className="hover:text-iris-purple transition-colors"
-                  >
-                    About Us
-                  </a>
+                  <Link to="/about" className="hover:text-iris-purple transition-colors">About Us</Link>
+                </li>
+                <li>
+                  <Link to="/recruitment" className="hover:text-iris-purple transition-colors">Join Us</Link>
                 </li>
               </ul>
             </div>
 
-            {/* PROJECTS */}
+            {/* QUICK LINKS */}
             <div className="space-y-3">
-              <h5 className="font-sans text-xs font-bold text-white uppercase tracking-wider">PROJECTS</h5>
+              <h5 className="font-sans text-xs font-bold text-white uppercase tracking-wider">QUICK LINKS</h5>
               <ul className="space-y-2.5 text-sm font-sans text-gray-400">
                 <li>
-                  <a
-                    href="#projects"
-                    onClick={(e) => handleLinkClick('projects', e)}
-                    className="hover:text-iris-purple transition-colors"
-                  >
-                    Soteria
-                  </a>
+                  <button onClick={() => { navigate('/'); setTimeout(() => onScrollToSection('projects'), 100); }} className="hover:text-iris-purple transition-colors text-left">
+                    Our Projects
+                  </button>
                 </li>
                 <li>
-                  <a
-                    href="#projects"
-                    onClick={(e) => handleLinkClick('projects', e)}
-                    className="hover:text-iris-purple transition-colors"
-                  >
-                    Greenthink
-                  </a>
+                  <button onClick={() => { navigate('/'); setTimeout(() => onScrollToSection('events'), 100); }} className="hover:text-iris-purple transition-colors text-left">
+                    Upcoming Events
+                  </button>
                 </li>
                 <li>
-                  <a
-                    href="#projects"
-                    onClick={(e) => handleLinkClick('projects', e)}
-                    className="hover:text-iris-purple transition-colors"
-                  >
-                    Vyas Management Platform
-                  </a>
+                  <button onClick={() => { navigate('/'); setTimeout(() => onScrollToSection('about-us'), 100); }} className="hover:text-iris-purple transition-colors text-left">
+                    About IRIS
+                  </button>
                 </li>
                 <li>
-                  <a
-                    href="#projects"
-                    onClick={(e) => handleLinkClick('projects', e)}
-                    className="hover:text-iris-purple transition-colors"
-                  >
-                    Supremix
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#projects"
-                    onClick={(e) => handleLinkClick('projects', e)}
-                    className="hover:text-iris-purple transition-colors"
-                  >
-                    GRID
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#projects"
-                    onClick={(e) => handleLinkClick('projects-all', e)}
-                    className="hover:text-iris-purple transition-colors"
-                  >
-                    TARZAN
-                  </a>
+                  <button onClick={() => { navigate('/'); setTimeout(() => onScrollToSection('join-us-section'), 100); }} className="hover:text-iris-purple transition-colors text-left">
+                    Contact
+                  </button>
                 </li>
               </ul>
             </div>
@@ -186,31 +116,19 @@ export default function Footer({ onScrollToSection, onOpenProjects }: FooterProp
               <h5 className="font-sans text-xs font-bold text-white uppercase tracking-wider">POLICIES</h5>
               <ul className="space-y-2.5 text-sm font-sans text-gray-400">
                 <li>
-                  <a
-                    href="#terms"
-                    onClick={(e) => { e.preventDefault(); showToast('Terms & Conditions page under construction'); }}
-                    className="hover:text-iris-purple transition-colors"
-                  >
+                  <button onClick={() => showToast('Terms & Conditions page under construction')} className="hover:text-iris-purple transition-colors text-left">
                     Terms & Condition
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a
-                    href="#privacy"
-                    onClick={(e) => { e.preventDefault(); showToast('Privacy Policy page under construction'); }}
-                    className="hover:text-iris-purple transition-colors"
-                  >
+                  <button onClick={() => showToast('Privacy Policy page under construction')} className="hover:text-iris-purple transition-colors text-left">
                     Privacy Policy
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a
-                    href="#refund"
-                    onClick={(e) => { e.preventDefault(); showToast('Refund Policy page under construction'); }}
-                    className="hover:text-iris-purple transition-colors"
-                  >
+                  <button onClick={() => showToast('Refund Policy page under construction')} className="hover:text-iris-purple transition-colors text-left">
                     Refund Policy
-                  </a>
+                  </button>
                 </li>
               </ul>
             </div>
@@ -218,18 +136,13 @@ export default function Footer({ onScrollToSection, onOpenProjects }: FooterProp
           </div>
         </div>
 
-        {/* Far bottom elements with horizontal line */}
+        {/* Bottom */}
         <div className="relative">
-          {/* Solid white line */}
           <div className="w-full h-[1px] bg-white/30 mb-6" />
-
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            {/* Left side text */}
             <div className="text-sm font-sans text-gray-300 select-none">
               iris@mitwpu.edu.in
             </div>
-
-            {/* Right side text */}
             <div className="text-sm font-sans text-gray-300 select-none">
               © IRIS MIT-WPU {currentYear}
             </div>
@@ -237,7 +150,7 @@ export default function Footer({ onScrollToSection, onOpenProjects }: FooterProp
         </div>
       </div>
 
-      {/* Modern Stateful Toast Notification Overlay */}
+      {/* Toast */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 animate-bounce-short">
           <div className="bg-zinc-950 border border-iris-purple/40 text-white rounded-xl px-4 py-3.5 shadow-2xl flex items-center gap-3 max-w-sm backdrop-blur-md">
@@ -248,10 +161,7 @@ export default function Footer({ onScrollToSection, onOpenProjects }: FooterProp
               <p className="text-[10px] font-mono text-gray-500 uppercase tracking-widest leading-none mb-1">SYSTEM_NOTICE</p>
               <p className="text-xs text-gray-300 font-sans leading-relaxed">{toastMessage}</p>
             </div>
-            <button
-              onClick={() => setToastMessage(null)}
-              className="p-1 text-gray-500 hover:text-white transition-colors"
-            >
+            <button onClick={() => setToastMessage(null)} className="p-1 text-gray-500 hover:text-white transition-colors">
               <X className="w-3.5 h-3.5" />
             </button>
           </div>

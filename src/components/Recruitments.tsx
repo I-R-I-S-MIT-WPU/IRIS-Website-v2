@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Send, Upload, ChevronRight, ChevronLeft, Check } from 'lucide-react';
+import { createApplication, uploadFile } from '../lib/db';
 
 const DOMAINS = {
   'TECH': ['Hardware', 'Software'],
@@ -44,14 +45,22 @@ export default function Recruitments() {
     return true;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canProceed()) return;
     setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
+    try {
+      let resume_url = '';
+      if (resume) {
+        const path = `${Date.now()}_${resume.name}`;
+        resume_url = await uploadFile('resumes', path, resume);
+      }
+      await createApplication({ ...form, resume_url });
       setSubmitted(true);
-    }, 1500);
+    } catch (err) {
+      alert('Something went wrong. Please try again.');
+    }
+    setSubmitting(false);
   };
 
   const inputClass = "w-full bg-zinc-50 border border-zinc-200 focus:border-iris-purple rounded-lg px-4 py-3 text-zinc-900 text-sm placeholder-zinc-400 outline-none transition-colors font-[Inter,sans-serif]";

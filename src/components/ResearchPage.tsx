@@ -1,10 +1,26 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Clock } from 'lucide-react';
 import { BLOGS } from '../data/blogs';
+import { getBlogs } from '../lib/db';
 
 export default function ResearchPage() {
-  const tags = [...new Set(BLOGS.map(b => b.tag))];
+  const [blogs, setBlogs] = useState<any[]>([]);
+
+  useEffect(() => {
+    getBlogs(true).then((data: any[]) => {
+      if (data?.length) {
+        setBlogs(data);
+      } else {
+        setBlogs(BLOGS.map(b => ({ ...b, read_time: b.readTime })));
+      }
+    }).catch(() => {
+      setBlogs(BLOGS.map(b => ({ ...b, read_time: b.readTime })));
+    });
+  }, []);
+
+  const tags = [...new Set(blogs.map(b => b.tag).filter(Boolean))];
 
   return (
     <section className="relative min-h-screen py-28 px-4 sm:px-8 md:px-12 lg:px-20 bg-black overflow-hidden">
@@ -33,7 +49,7 @@ export default function ResearchPage() {
 
         {/* Papers list */}
         <div className="space-y-6">
-          {BLOGS.map((blog, idx) => (
+          {blogs.map((blog, idx) => (
             <motion.div
               key={blog.id}
               initial={{ opacity: 0, y: 20 }}
@@ -62,7 +78,7 @@ export default function ResearchPage() {
                       <span>{blog.author}</span>
                       <span>•</span>
                       <Clock className="w-3 h-3" />
-                      <span>{blog.readTime}</span>
+                      <span>{(blog as any).readTime || (blog as any).read_time}</span>
                     </div>
                     <span className="flex items-center gap-1 text-sm text-iris-purple font-medium group-hover:gap-2 transition-all">
                       Read <ArrowRight className="w-4 h-4" />

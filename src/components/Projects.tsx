@@ -1,7 +1,9 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { ShieldCheck, Database, Drone, X, Cpu, ChevronRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'motion/react';
+import { ShieldCheck, Database, Drone, Cpu, ChevronRight } from 'lucide-react';
 import { Project, INITIAL_PROJECTS } from '../types';
+import { getProjects } from '../lib/db';
 
 interface ProjectsProps {
   isOpenDirectly?: boolean;
@@ -9,22 +11,26 @@ interface ProjectsProps {
 }
 
 export default function Projects({ isOpenDirectly = false, onCloseDirectly }: ProjectsProps) {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [projects, setProjects] = useState<Project[]>(INITIAL_PROJECTS);
 
-  const getProjectIcon = (id: string) => {
-    switch (id) {
-      case 'soteria': return <ShieldCheck className="w-5 h-5 text-iris-purple" />;
-      case 'vyas': return <Database className="w-5 h-5 text-iris-purple" />;
-      case 'tarzan': return <Drone className="w-5 h-5 text-iris-purple" />;
-      default: return <Cpu className="w-5 h-5 text-iris-purple" />;
-    }
-  };
-
-  const projectImages: Record<string, string> = {
-    soteria: 'https://images.unsplash.com/photo-1607990283143-e81e7a2c93ab?q=80&w=1000&auto=format&fit=crop',
-    vyas: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=800&auto=format&fit=crop',
-    tarzan: 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?q=80&w=800&auto=format&fit=crop',
-  };
+  useEffect(() => {
+    getProjects(true).then((data: any[]) => {
+      if (data?.length) {
+        setProjects(data.map(p => ({
+          id: p.id,
+          title: p.title,
+          subtitle: '',
+          shortDescription: p.short_description,
+          fullDescription: p.full_description,
+          image: p.image,
+          category: p.category,
+          techStack: p.tech_stack,
+          status: p.status,
+          lead: p.lead,
+        })));
+      }
+    }).catch(() => {});
+  }, []);
 
   return (
     <section id="projects" className="relative py-28 px-4 sm:px-8 md:px-12 lg:px-20 bg-black overflow-hidden">
@@ -50,22 +56,25 @@ export default function Projects({ isOpenDirectly = false, onCloseDirectly }: Pr
 
         {/* Project Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {INITIAL_PROJECTS.map((project, idx) => (
+          {projects.map((project, idx) => (
             <motion.div
               key={project.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
-              onClick={() => setSelectedProject(project)}
-              className={`group relative rounded-3xl overflow-hidden cursor-pointer border border-white/5 hover:border-iris-purple/20 transition-all ${
-                idx === 0 ? 'lg:col-span-2 h-[400px]' : 'h-[320px]'
-              }`}
+              className={idx === 0 ? 'lg:col-span-2' : ''}
             >
+              <Link
+                to={`/projects/${project.id}`}
+                className={`group relative rounded-3xl overflow-hidden block border border-white/5 hover:border-iris-purple/20 transition-all ${
+                  idx === 0 ? 'h-[400px]' : 'h-[320px]'
+                }`}
+              >
               {/* Background Image */}
               <div className="absolute inset-0 z-0">
                 <img
-                  src={projectImages[project.id] || projectImages.soteria}
+                  src={project.image}
                   alt={project.title}
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover brightness-[0.3] group-hover:brightness-[0.4] group-hover:scale-105 transition-all duration-700"
@@ -104,83 +113,12 @@ export default function Projects({ isOpenDirectly = false, onCloseDirectly }: Pr
                   </span>
                 </div>
               </div>
+              </Link>
             </motion.div>
           ))}
         </div>
 
       </div>
-
-      {/* Project Detail Modal */}
-      <AnimatePresence>
-        {selectedProject && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedProject(null)}
-              className="absolute inset-0 bg-black/85 backdrop-blur-md"
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-3xl bg-zinc-950 border border-white/10 rounded-2xl p-6 sm:p-8 shadow-2xl z-10 max-h-[92vh] overflow-y-auto"
-            >
-              <button
-                onClick={() => setSelectedProject(null)}
-                className="absolute top-4 right-4 p-2 text-gray-400 hover:text-white transition-colors cursor-pointer z-20"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              {/* Header */}
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-iris-purple/15 border border-iris-purple/30 rounded-xl">
-                  {getProjectIcon(selectedProject.id)}
-                </div>
-                <div>
-                  <span className="text-[10px] text-iris-purple font-semibold uppercase tracking-widest font-sans">
-                    {selectedProject.category}
-                  </span>
-                  <h3 className="font-funnel font-bold text-2xl sm:text-3xl text-white">
-                    {selectedProject.title}
-                  </h3>
-                </div>
-              </div>
-
-              {/* Body */}
-              <div className="space-y-6">
-                <p className="text-gray-300 text-sm leading-relaxed font-sans">
-                  {selectedProject.fullDescription}
-                </p>
-
-                <div>
-                  <h4 className="text-xs font-semibold text-white uppercase tracking-wider mb-3">Tech Stack</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedProject.techStack.map((tech) => (
-                      <span key={tech} className="bg-zinc-900 border border-white/5 text-gray-400 px-3 py-1.5 rounded-lg text-xs font-mono">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
-                  <div>
-                    <span className="text-[10px] text-gray-500 uppercase tracking-wider">Lead</span>
-                    <p className="text-white text-sm font-medium mt-0.5">{selectedProject.lead}</p>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-gray-500 uppercase tracking-wider">Status</span>
-                    <p className="text-white text-sm font-medium mt-0.5">{selectedProject.status}</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </section>
   );
 }

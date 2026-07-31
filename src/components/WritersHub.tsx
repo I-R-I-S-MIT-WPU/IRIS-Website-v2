@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { X, ArrowRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'motion/react';
+import { ArrowRight } from 'lucide-react';
+import { getBlogs } from '../lib/db';
 
 interface Blog {
   id: string;
@@ -12,10 +14,7 @@ interface Blog {
   image: string;
 }
 
-export default function WritersHub() {
-  const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
-
-  const blogs: Blog[] = [
+const HARDCODED_BLOGS: Blog[] = [
     {
       id: 'autonomous-nav',
       title: 'Autonomous Navigation in Dense Urban Environments',
@@ -44,6 +43,25 @@ export default function WritersHub() {
       image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop',
     },
   ];
+
+export default function WritersHub() {
+  const [blogs, setBlogs] = useState<Blog[]>(HARDCODED_BLOGS);
+
+  useEffect(() => {
+    getBlogs(true).then((data: any[]) => {
+      if (data?.length) {
+        setBlogs(data.slice(0, 3).map(b => ({
+          id: b.id,
+          title: b.title,
+          excerpt: b.excerpt,
+          content: b.content,
+          author: b.author,
+          tag: b.tag,
+          image: b.image,
+        })));
+      }
+    }).catch(() => {});
+  }, []);
 
   return (
     <section id="writers-hub" className="relative py-28 px-4 sm:px-8 md:px-12 lg:px-20 bg-black overflow-hidden">
@@ -76,8 +94,11 @@ export default function WritersHub() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
-              className="bg-zinc-900 border border-white/5 rounded-3xl overflow-hidden flex flex-col group hover:border-iris-purple/20 transition-all"
             >
+              <Link
+                to={`/blog/${blog.id}`}
+                className="bg-zinc-900 border border-white/5 rounded-3xl overflow-hidden flex flex-col group hover:border-iris-purple/20 transition-all block h-full"
+              >
               {/* Image */}
               <div className="h-44 overflow-hidden">
                 <img
@@ -102,71 +123,18 @@ export default function WritersHub() {
 
                 <div className="mt-5 pt-4 border-t border-white/5 flex items-center justify-between">
                   <span className="text-xs text-gray-500 font-sans">By {blog.author}</span>
-                  <button
-                    onClick={() => setSelectedBlog(blog)}
-                    className="flex items-center gap-1.5 text-sm font-medium text-iris-purple hover:text-white transition-colors cursor-pointer"
-                  >
+                  <span className="flex items-center gap-1.5 text-sm font-medium text-iris-purple group-hover:text-white transition-colors">
                     Read More
                     <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
+                  </span>
                 </div>
               </div>
+              </Link>
             </motion.div>
           ))}
         </div>
 
       </div>
-
-      {/* Article Modal */}
-      <AnimatePresence>
-        {selectedBlog && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedBlog(null)}
-              className="absolute inset-0 bg-black/85 backdrop-blur-md"
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-2xl bg-zinc-950 border border-white/10 rounded-2xl overflow-hidden shadow-2xl z-10 max-h-[90vh] flex flex-col"
-            >
-              <button
-                onClick={() => setSelectedBlog(null)}
-                className="absolute top-4 right-4 p-2 rounded-full bg-black/60 hover:bg-white/10 text-gray-400 hover:text-white transition-all cursor-pointer z-20 border border-white/5"
-              >
-                <X className="w-4 h-4" />
-              </button>
-
-              <div className="overflow-y-auto flex-grow">
-                <div className="h-56 w-full">
-                  <img
-                    src={selectedBlog.image}
-                    alt={selectedBlog.title}
-                    referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="p-8 sm:p-10">
-                  <span className="text-xs font-semibold text-iris-purple uppercase tracking-widest font-sans">
-                    {selectedBlog.tag}
-                  </span>
-                  <h3 className="font-sans font-bold text-2xl sm:text-3xl text-white mt-3 mb-2 leading-tight">
-                    {selectedBlog.title}
-                  </h3>
-                  <p className="text-sm text-gray-400 mb-8 font-sans">By {selectedBlog.author}</p>
-                  <p className="text-zinc-300 font-sans leading-relaxed text-base">
-                    {selectedBlog.content}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </section>
   );
 }

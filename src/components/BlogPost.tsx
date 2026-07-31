@@ -1,11 +1,19 @@
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowLeft, Clock, User } from 'lucide-react';
 import { BLOGS } from '../data/blogs';
+import { getBlogById } from '../lib/db';
 
 export default function BlogPost() {
   const { id } = useParams();
-  const blog = BLOGS.find(b => b.id === id);
+  const [blog, setBlog] = useState<any>(BLOGS.find(b => b.id === id));
+
+  useEffect(() => {
+    if (id) {
+      getBlogById(id).then(data => { if (data) setBlog({ ...data, readTime: data.read_time }); }).catch(() => {});
+    }
+  }, [id]);
 
   if (!blog) {
     return (

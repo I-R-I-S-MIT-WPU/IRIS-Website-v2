@@ -1,19 +1,47 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Clock, Search } from 'lucide-react';
 import { BLOGS } from '../data/blogs';
+import { getBlogs } from '../lib/db';
+
+interface BlogRow {
+  id: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  author: string;
+  tag: string;
+  image: string;
+  date: string;
+  read_time: string;
+}
 
 export default function BlogsPage() {
   const [query, setQuery] = useState('');
+  const [blogs, setBlogs] = useState<any[]>([]);
 
-  const filtered = BLOGS.filter(b =>
+  useEffect(() => {
+    getBlogs(true).then((data: BlogRow[]) => {
+      if (data?.length) {
+        setBlogs(data.map(b => ({ ...b, readTime: b.read_time || b.read_time })));
+      } else {
+        // Fallback to hardcoded if DB is empty
+        setBlogs(BLOGS.map(b => ({ ...b, read_time: b.readTime })));
+      }
+    }).catch(() => {
+      // On error, use hardcoded
+      setBlogs(BLOGS.map(b => ({ ...b, read_time: b.readTime })));
+    });
+  }, []);
+
+  const filtered = blogs.filter((b: any) =>
     b.title.toLowerCase().includes(query.toLowerCase()) ||
-    b.tag.toLowerCase().includes(query.toLowerCase()) ||
+    (b.tag || '').toLowerCase().includes(query.toLowerCase()) ||
     b.author.toLowerCase().includes(query.toLowerCase())
   );
 
-  const featured = BLOGS[0];
+  const featured = blogs[0];
   const rest = query ? filtered : filtered.slice(1);
 
   return (
@@ -91,7 +119,7 @@ export default function BlogsPage() {
                         <p className="text-white text-sm font-medium">{featured.author}</p>
                         <div className="flex items-center gap-1.5 text-xs text-gray-500">
                           <Clock className="w-3 h-3" />
-                          <span>{featured.readTime}</span>
+                          <span>{(featured as any).readTime || (featured as any).read_time}</span>
                         </div>
                       </div>
                     </div>
@@ -146,7 +174,7 @@ export default function BlogsPage() {
                       </div>
                       <div>
                         <p className="text-white text-xs font-medium">{blog.author}</p>
-                        <p className="text-gray-600 text-[10px]">{blog.readTime}</p>
+                        <p className="text-gray-600 text-[10px]">{(blog as any).readTime || (blog as any).read_time}</p>
                       </div>
                     </div>
                     <ArrowRight className="w-4 h-4 text-gray-600 group-hover:text-iris-purple transition-colors" />

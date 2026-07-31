@@ -1,11 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Calendar, Clock, MapPin, Users, ChevronRight, X, Sparkles, CheckCircle, Ticket } from 'lucide-react';
 
 import { Event, INITIAL_EVENTS } from '../types';
+import { getEvents } from '../lib/db';
 
 export default function Events() {
   const [events, setEvents] = useState<Event[]>(INITIAL_EVENTS);
+
+  useEffect(() => {
+    getEvents(true).then((data: any[]) => {
+      if (data?.length) {
+        setEvents(data.map(e => ({
+          id: e.id,
+          title: e.title,
+          description: e.description,
+          date: e.date,
+          time: e.time,
+          location: e.location,
+          speaker: e.speaker,
+          spotsLeft: e.spots_left,
+        })));
+      }
+    }).catch(() => {});
+  }, []);
   const [registeringEvent, setRegisteringEvent] = useState<Event | null>(null);
   const [ticket, setTicket] = useState<{
     eventName: string;
