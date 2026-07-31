@@ -78,7 +78,7 @@ export default function BlogsPage() {
         </motion.div>
 
         {/* Featured - only show when not searching */}
-        {!query && (
+        {!query && featured && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

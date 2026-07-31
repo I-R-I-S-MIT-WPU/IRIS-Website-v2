@@ -17,6 +17,7 @@ import ResearchPage from './components/ResearchPage';
 import EventsPage from './components/EventsPage';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
+import NotFound from './components/NotFound';
 import Footer from './components/Footer';
 import { Project, INITIAL_PROJECTS } from './types';
 import { motion, AnimatePresence } from 'motion/react';
@@ -311,6 +312,7 @@ export default function App() {
           <Route path="/events" element={<PageWrapper><EventsPage /></PageWrapper>} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </BrowserRouter>

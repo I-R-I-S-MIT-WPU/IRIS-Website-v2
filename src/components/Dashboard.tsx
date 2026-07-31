@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import { LogOut, Users, Calendar, FolderOpen, FileText, Plus, Pencil, Trash2, ChevronLeft, Upload, Image as ImageIcon, Eye, EyeOff } from 'lucide-react';
 import * as db from '../lib/db';
 
-type Tab = 'overview' | 'blogs' | 'events' | 'projects' | 'members' | 'mentors' | 'applications';
+type Tab = 'overview' | 'blogs' | 'events' | 'projects' | 'members' | 'mentors' | 'gallery' | 'applications';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -23,6 +23,7 @@ export default function Dashboard() {
     { key: 'projects', label: 'Projects', icon: FolderOpen },
     { key: 'members', label: 'Members', icon: Users },
     { key: 'mentors', label: 'Mentors', icon: Users },
+    { key: 'gallery', label: 'Gallery', icon: ImageIcon },
     { key: 'applications', label: 'Applications', icon: FileText },
   ];
 
@@ -67,6 +68,7 @@ export default function Dashboard() {
         {tab === 'projects' && <ProjectsTab />}
         {tab === 'members' && <MembersTab />}
         {tab === 'mentors' && <MentorsTab />}
+        {tab === 'gallery' && <GalleryTab />}
         {tab === 'applications' && <ApplicationsTab />}
       </div>
     </section>
@@ -1248,6 +1250,68 @@ function FormEditor({ fields, initial, onSave, onCancel }: { fields: string[]; i
           <button type="button" onClick={onCancel} className="text-gray-400 hover:text-white px-4 py-2.5 text-sm cursor-pointer">Cancel</button>
         </div>
       </form>
+    </div>
+  );
+}
+
+// ─── Gallery Tab ─────────────────────────────────────────
+
+function GalleryTab() {
+  const [rows, setRows] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const load = () => { db.getGallery().then(d => { setRows(d || []); setLoading(false); }).catch(() => setLoading(false)); };
+  useEffect(load, []);
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Remove this image?')) return;
+    await db.deleteGalleryImage(id);
+    load();
+  };
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const path = `gallery/${Date.now()}_${file.name}`;
+      const url = await db.uploadFile('images', path, file);
+      await db.createGalleryImage({ image: url });
+      load();
+    } catch { alert('Upload failed'); }
+    setUploading(false);
+  };
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-white font-semibold text-lg">Gallery (About Us Section)</h2>
+        <button onClick={() => fileRef.current?.click()} disabled={uploading} className="flex items-center gap-2 bg-iris-purple hover:bg-iris-purple/80 disabled:opacity-50 text-white px-4 py-2 rounded-lg text-sm font-medium cursor-pointer transition-all">
+          <Upload className="w-4 h-4" /> {uploading ? 'Uploading...' : 'Add Image'}
+        </button>
+        <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleUpload} />
+      </div>
+      {loading ? <p className="text-gray-500 text-sm">Loading...</p> : rows.length === 0 ? (
+        <p className="text-gray-500 text-sm">No gallery images yet.</p>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          {rows.map(row => (
+            <div key={row.id} className={`relative group rounded-xl overflow-hidden border border-white/5 ${row.visible === false ? 'opacity-50' : ''}`}>
+              <img src={row.image} alt="" referrerPolicy="no-referrer" className="w-full h-40 object-cover" />
+              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                <button onClick={async () => { await db.updateGalleryImage(row.id, { visible: !row.visible }); load(); }} className={`p-2 rounded-lg cursor-pointer ${row.visible === false ? 'bg-gray-800 text-gray-400 hover:text-white' : 'bg-emerald-600/20 text-emerald-400 hover:text-emerald-300'}`}>
+                  {row.visible === false ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+                <button onClick={() => handleDelete(row.id)} className="p-2 bg-red-600/20 text-red-400 hover:text-red-300 rounded-lg cursor-pointer">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

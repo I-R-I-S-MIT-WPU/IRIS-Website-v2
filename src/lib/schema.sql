@@ -72,6 +72,14 @@ create table if not exists mentors (
   created_at timestamptz default now()
 );
 
+-- Gallery (About Us section)
+create table if not exists gallery (
+  id uuid primary key default gen_random_uuid(),
+  image text not null,
+  visible boolean default true,
+  created_at timestamptz default now()
+);
+
 -- Recruitment Applications
 create table if not exists applications (
   id uuid primary key default gen_random_uuid(),
@@ -96,6 +104,7 @@ alter table events enable row level security;
 alter table projects enable row level security;
 alter table members enable row level security;
 alter table mentors enable row level security;
+alter table gallery enable row level security;
 alter table applications enable row level security;
 
 -- Public read policies
@@ -104,6 +113,7 @@ create policy "Public read events" on events for select using (true);
 create policy "Public read projects" on projects for select using (true);
 create policy "Public read members" on members for select using (true);
 create policy "Public read mentors" on mentors for select using (true);
+create policy "Public read gallery" on gallery for select using (true);
 
 -- Anon insert for applications (recruitment form)
 create policy "Anon insert applications" on applications for insert with check (true);
@@ -114,4 +124,5 @@ create policy "Anon manage events" on events for all using (true) with check (tr
 create policy "Anon manage projects" on projects for all using (true) with check (true);
 create policy "Anon manage members" on members for all using (true) with check (true);
 create policy "Anon manage mentors" on mentors for all using (true) with check (true);
+create policy "Anon manage gallery" on gallery for all using (true) with check (true);
 create policy "Anon manage applications" on applications for all using (true) with check (true);

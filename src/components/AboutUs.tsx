@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { ChevronRight } from 'lucide-react';
+import { getGallery } from '../lib/db';
 
-const GALLERY_IMAGES = [
+const FALLBACK_GALLERY = [
   'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop',
   'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop',
   'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=800&auto=format&fit=crop',
@@ -11,14 +12,23 @@ const GALLERY_IMAGES = [
 ];
 
 export default function AboutUs() {
+  const [galleryImages, setGalleryImages] = useState<string[]>(FALLBACK_GALLERY);
   const [currentImg, setCurrentImg] = useState(0);
 
   useEffect(() => {
+    getGallery(true).then((data: any[]) => {
+      if (data?.length) {
+        setGalleryImages(data.map(g => g.image));
+      }
+    }).catch(() => {});
+  }, []);
+
+  useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImg(prev => (prev + 1) % GALLERY_IMAGES.length);
+      setCurrentImg(prev => (prev + 1) % galleryImages.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [galleryImages]);
 
   return (
     <section id="about-us" className="relative py-28 px-4 sm:px-8 md:px-12 lg:px-20 bg-black overflow-hidden">
@@ -59,7 +69,7 @@ export default function AboutUs() {
 
               {/* Progress bar */}
               <div className="flex gap-2 mt-8">
-                {GALLERY_IMAGES.map((_, i) => (
+                {galleryImages.map((_, i) => (
                   <div key={i} className="flex-1 h-1 rounded-full bg-zinc-300/50 overflow-hidden">
                     <motion.div
                       className="h-full bg-iris-purple rounded-full"
@@ -74,7 +84,7 @@ export default function AboutUs() {
 
             {/* Right: gallery flush to edges */}
             <div className="relative lg:w-1/2 h-[280px] lg:h-auto min-h-[280px]">
-              {GALLERY_IMAGES.map((src, i) => (
+              {galleryImages.map((src, i) => (
                 <img
                   key={src}
                   src={src}

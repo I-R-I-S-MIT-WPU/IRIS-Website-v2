@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'motion/react';
 import { X, Bell } from 'lucide-react';
 
 interface FooterProps {
@@ -19,10 +20,33 @@ export default function Footer({ onScrollToSection, onOpenProjects }: FooterProp
 
   return (
     <footer id="footer-section" className="bg-black pt-20 pb-8 px-6 lg:px-12 border-t border-transparent relative overflow-hidden text-left">
-      {/* Radial purple glow */}
+      {/* Animated radial purple glow */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute bottom-[-600px] left-1/2 -translate-x-1/2 w-[2000px] h-[700px] rounded-full bg-[#9333ea] opacity-90 blur-[100px]" />
-        <div className="absolute bottom-[-580px] left-1/2 -translate-x-1/2 w-[1000px] h-[650px] rounded-full bg-[#c084fc] opacity-80 blur-[80px]" />
+        <motion.div
+          className="absolute bottom-[-600px] left-1/2 -translate-x-1/2 w-[2000px] h-[700px] rounded-full bg-[#9333ea] opacity-90 blur-[100px]"
+          animate={{
+            scale: [1, 1.1, 1],
+            opacity: [0.9, 0.7, 0.9],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+        <motion.div
+          className="absolute bottom-[-580px] left-1/2 -translate-x-1/2 w-[1000px] h-[650px] rounded-full bg-[#c084fc] opacity-80 blur-[80px]"
+          animate={{
+            scale: [1, 1.15, 1],
+            opacity: [0.8, 0.5, 0.8],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 0.5,
+          }}
+        />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -38,17 +62,17 @@ export default function Footer({ onScrollToSection, onOpenProjects }: FooterProp
               <h5 className="font-sans text-xs font-bold text-white uppercase tracking-wider">SOCIAL</h5>
               <ul className="space-y-2 text-sm font-sans text-gray-400">
                 <li>
-                  <a href="https://github.com/iris-mitwpu" target="_blank" rel="noopener noreferrer" className="hover:text-iris-purple transition-colors">
+                  <a href="https://github.com/I-R-I-S-MIT-WPU" target="_blank" rel="noopener noreferrer" className="hover:text-iris-purple transition-colors">
                     GITHUB
                   </a>
                 </li>
                 <li>
-                  <a href="https://linkedin.com/company/iris-mitwpu" target="_blank" rel="noopener noreferrer" className="hover:text-iris-purple transition-colors">
+                  <a href="https://www.linkedin.com/company/105128747" target="_blank" rel="noopener noreferrer" className="hover:text-iris-purple transition-colors">
                     LINKEDIN
                   </a>
                 </li>
                 <li>
-                  <a href="https://instagram.com/iris.mitwpu" target="_blank" rel="noopener noreferrer" className="hover:text-iris-purple transition-colors">
+                  <a href="https://www.instagram.com/iris_mitwpu/" target="_blank" rel="noopener noreferrer" className="hover:text-iris-purple transition-colors">
                     INSTAGRAM
                   </a>
                 </li>
