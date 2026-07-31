@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -10,6 +10,10 @@ import JoinUs from './components/JoinUs';
 import Recruitments from './components/Recruitments';
 import BlogsPage from './components/BlogsPage';
 import BlogPost from './components/BlogPost';
+import AboutPage from './components/AboutPage';
+import ProjectsPage from './components/ProjectsPage';
+import ResearchPage from './components/ResearchPage';
+import EventsPage from './components/EventsPage';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import Footer from './components/Footer';
@@ -218,6 +222,21 @@ function HomePage() {
   );
 }
 
+function PageWrapper({ children }: { children: React.ReactNode }) {
+  const handleScrollToSection = (sectionId: string) => {
+    const targetElement = document.getElementById(sectionId);
+    if (targetElement) targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  return (
+    <>
+      <Navbar onScrollToSection={handleScrollToSection} onOpenProjects={() => {}} />
+      <div className="pt-24">{children}</div>
+      <Footer onScrollToSection={handleScrollToSection} onOpenProjects={() => {}} />
+    </>
+  );
+}
+
 function BlogListPage() {
   const handleScrollToSection = (sectionId: string) => {
     const targetElement = document.getElementById(sectionId);
@@ -284,6 +303,10 @@ export default function App() {
           <Route path="/recruitment" element={<RecruitmentPage />} />
           <Route path="/blog" element={<BlogListPage />} />
           <Route path="/blog/:id" element={<BlogDetailPage />} />
+          <Route path="/about" element={<PageWrapper><AboutPage /></PageWrapper>} />
+          <Route path="/projects" element={<PageWrapper><ProjectsPage /></PageWrapper>} />
+          <Route path="/research" element={<PageWrapper><ResearchPage /></PageWrapper>} />
+          <Route path="/events" element={<PageWrapper><EventsPage /></PageWrapper>} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>

@@ -13,18 +13,14 @@ export default function Navbar({ onScrollToSection, onOpenProjects }: NavbarProp
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { label: 'Research', id: 'writers-hub' },
-    { label: 'Blogs', id: 'blog', isLink: true },
-    { label: 'Projects', id: 'projects' },
-    { label: 'About Us', id: 'about-us' },
+    { label: 'Research', path: '/research' },
+    { label: 'Blogs', path: '/blog' },
+    { label: 'Projects', path: '/projects' },
+    { label: 'About Us', path: '/about' },
   ];
 
-  const handleNavClick = (id: string, isLink?: boolean) => {
-    if (isLink) {
-      navigate(`/${id}`);
-    } else {
-      onScrollToSection(id);
-    }
+  const handleNavClick = (path: string) => {
+    navigate(path);
     setIsMobileMenuOpen(false);
   };
 
@@ -39,7 +35,7 @@ export default function Navbar({ onScrollToSection, onOpenProjects }: NavbarProp
           {/* Logo - bigger */}
           <button
             id="nav-logo-btn"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onClick={() => navigate('/')}
             className="group cursor-pointer focus:outline-none flex-shrink-0"
           >
             <img
@@ -53,9 +49,8 @@ export default function Navbar({ onScrollToSection, onOpenProjects }: NavbarProp
           <nav id="desktop-nav" className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
               <button
-                key={item.id}
-                id={`nav-link-${item.id}`}
-                onClick={() => handleNavClick(item.id, (item as any).isLink)}
+                key={item.path}
+                onClick={() => handleNavClick(item.path)}
                 className="text-zinc-700 hover:text-zinc-900 transition-colors cursor-pointer focus:outline-none text-[13px] font-medium font-sans"
               >
                 {item.label}
@@ -67,7 +62,7 @@ export default function Navbar({ onScrollToSection, onOpenProjects }: NavbarProp
           <div className="hidden md:flex items-center">
             <button
               id="ongoing-projects-nav-btn"
-              onClick={() => handleNavClick('events')}
+              onClick={() => handleNavClick('/events')}
               className="group flex items-center gap-2 bg-zinc-900 hover:bg-black text-white rounded-xl px-5 py-2.5 text-[13px] font-medium cursor-pointer focus:outline-none shadow-sm font-sans transition-all"
             >
               Events
@@ -101,9 +96,8 @@ export default function Navbar({ onScrollToSection, onOpenProjects }: NavbarProp
             <div className="flex flex-col gap-1">
               {navItems.map((item) => (
                 <button
-                  key={item.id}
-                  id={`mobile-nav-link-${item.id}`}
-                  onClick={() => handleNavClick(item.id, (item as any).isLink)}
+                  key={item.path}
+                  onClick={() => handleNavClick(item.path)}
                   className="text-left text-zinc-700 hover:text-black hover:pl-2 text-sm font-medium transition-all py-3 border-b border-zinc-100 font-sans focus:outline-none"
                 >
                   {item.label}
@@ -112,8 +106,7 @@ export default function Navbar({ onScrollToSection, onOpenProjects }: NavbarProp
             </div>
 
             <button
-              id="mobile-ongoing-projects-btn"
-              onClick={() => handleNavClick('events')}
+              onClick={() => handleNavClick('/events')}
               className="flex items-center justify-center gap-2 bg-zinc-900 hover:bg-black text-white w-full py-3 rounded-xl text-sm font-medium transition-all font-sans"
             >
               Events
