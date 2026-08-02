@@ -55,8 +55,8 @@ export default function Hero({ onJoinClick }: HeroProps) {
       </div>
 
       {/* Slogan and button - behind the bot (same z as IRIS text) */}
-      <div className="absolute inset-0 z-10 flex items-end md:items-center justify-center pointer-events-none pb-32 md:pb-0">
-        <div className="w-full max-w-6xl mx-auto px-6 sm:px-12 md:px-16 lg:px-20 flex flex-col md:flex-row items-start md:items-end justify-between gap-4 md:gap-6">
+      <div className="absolute inset-0 z-30 flex items-end md:items-center justify-center pointer-events-none pb-32 md:pb-0">
+        <div className="w-full max-w-7xl mx-auto px-6 sm:px-12 md:px-16 lg:px-20 flex flex-col md:flex-row items-start md:items-end justify-between gap-4 md:gap-6 md:mt-[28vh]">
           {/* Left Column Slogan */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -64,10 +64,10 @@ export default function Hero({ onJoinClick }: HeroProps) {
             transition={{ delay: 0.3, duration: 0.7, ease: "easeOut" }}
             className="text-left font-poppins pointer-events-auto"
           >
-            <p className="font-extrabold uppercase tracking-[0.24em] text-[10px] sm:text-xs md:text-sm text-white/95 leading-none">
+            <p className="font-extrabold uppercase tracking-[0.28em] text-[10px] sm:text-xs md:text-sm text-white leading-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
               INNOVATION &nbsp;&nbsp;&nbsp;&nbsp; RESEARCH
             </p>
-            <p className="font-extrabold uppercase tracking-[0.24em] text-[10px] sm:text-xs md:text-sm text-white/95 leading-none mt-2 sm:mt-3">
+            <p className="font-extrabold uppercase tracking-[0.28em] text-[10px] sm:text-xs md:text-sm text-white leading-none mt-2 sm:mt-3 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
               INTELLIGENCE &nbsp;&nbsp;&nbsp;&nbsp; SUPPORT
             </p>
           </motion.div>
