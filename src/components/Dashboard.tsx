@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { LogOut, Users, Calendar, FolderOpen, FileText, Plus, Pencil, Trash2, ChevronLeft, Upload, Image as ImageIcon, Eye, EyeOff } from 'lucide-react';
+import { LogOut, Users, Calendar, FolderOpen, FileText, Plus, Pencil, Trash2, ChevronLeft, Upload, Image as ImageIcon, Eye, EyeOff, Pin, PinOff } from 'lucide-react';
 import * as db from '../lib/db';
 
 type Tab = 'overview' | 'blogs' | 'events' | 'projects' | 'members' | 'mentors' | 'gallery' | 'applications';
@@ -10,11 +10,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [tab, setTab] = useState<Tab>('overview');
 
-  useEffect(() => {
-    if (!localStorage.getItem('iris_auth')) navigate('/login');
-  }, [navigate]);
-
-  const handleLogout = () => { localStorage.removeItem('iris_auth'); navigate('/login'); };
+  const handleLogout = () => { navigate('/'); };
 
   const tabs: { key: Tab; label: string; icon: any }[] = [
     { key: 'overview', label: 'Overview', icon: FolderOpen },
@@ -44,7 +40,7 @@ export default function Dashboard() {
             </div>
           </div>
           <button onClick={handleLogout} className="flex items-center gap-2 text-sm text-gray-400 hover:text-white border border-white/10 hover:border-white/20 px-4 py-2 rounded-lg transition-all cursor-pointer">
-            <LogOut className="w-4 h-4" /> Logout
+            <LogOut className="w-4 h-4" /> Exit
           </button>
         </div>
 
@@ -165,7 +161,10 @@ function BlogsTab() {
                 <p className="text-gray-500 text-xs">{row.author} &middot; {row.tag} &middot; {row.date || '—'}</p>
               </div>
               <div className="flex items-center gap-1 shrink-0">
-                <button onClick={async () => { await db.updateBlog(row.id, { visible: !row.visible }); load(); }} className={`p-2 cursor-pointer ${row.visible === false ? 'text-gray-600 hover:text-white' : 'text-emerald-400 hover:text-emerald-300'}`} title={row.visible === false ? 'Hidden — click to show' : 'Visible — click to hide'}>
+                <button onClick={async () => { await db.updateBlog(row.id, { pinned: !row.pinned }); load(); }} className={`p-2 cursor-pointer ${row.pinned ? 'text-iris-purple hover:text-iris-purple/80' : 'text-gray-600 hover:text-iris-purple'}`} title={row.pinned ? 'Pinned' : 'Pin to top'}>
+                  {row.pinned ? <Pin className="w-4 h-4 fill-current" /> : <PinOff className="w-4 h-4" />}
+                </button>
+                <button onClick={async () => { await db.updateBlog(row.id, { visible: !row.visible }); load(); }} className={`p-2 cursor-pointer ${row.visible === false ? 'text-gray-600 hover:text-white' : 'text-emerald-400 hover:text-emerald-300'}`} title={row.visible === false ? 'Hidden' : 'Visible'}>
                   {row.visible === false ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
                 <button onClick={() => setEditing(row)} className="text-gray-400 hover:text-white p-2 cursor-pointer"><Pencil className="w-4 h-4" /></button>
@@ -500,6 +499,9 @@ function ProjectsTab() {
                 <p className="text-gray-500 text-xs">{row.category} &middot; {row.status} &middot; Lead: {row.lead || '—'}</p>
               </div>
               <div className="flex items-center gap-1 shrink-0">
+                <button onClick={async () => { await db.updateProject(row.id, { pinned: !row.pinned }); load(); }} className={`p-2 cursor-pointer ${row.pinned ? 'text-iris-purple hover:text-iris-purple/80' : 'text-gray-600 hover:text-iris-purple'}`} title={row.pinned ? 'Pinned' : 'Pin to top'}>
+                  {row.pinned ? <Pin className="w-4 h-4 fill-current" /> : <PinOff className="w-4 h-4" />}
+                </button>
                 <button onClick={async () => { await db.updateProject(row.id, { visible: !row.visible }); load(); }} className={`p-2 cursor-pointer ${row.visible === false ? 'text-gray-600 hover:text-white' : 'text-emerald-400 hover:text-emerald-300'}`} title={row.visible === false ? 'Hidden' : 'Visible'}>
                   {row.visible === false ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -797,6 +799,9 @@ function MembersTab() {
                 <p className="text-gray-500 text-xs truncate">{row.position} &middot; {row.domain}</p>
               </div>
               <div className="flex items-center gap-0.5 shrink-0">
+                <button onClick={async () => { await db.updateMember(row.id, { pinned: !row.pinned }); load(); }} className={`p-1.5 cursor-pointer ${row.pinned ? 'text-iris-purple hover:text-iris-purple/80' : 'text-gray-600 hover:text-iris-purple'}`} title={row.pinned ? 'Pinned' : 'Pin to top'}>
+                  {row.pinned ? <Pin className="w-3.5 h-3.5 fill-current" /> : <PinOff className="w-3.5 h-3.5" />}
+                </button>
                 <button onClick={async () => { await db.updateMember(row.id, { visible: !row.visible }); load(); }} className={`p-1.5 cursor-pointer ${row.visible === false ? 'text-gray-600 hover:text-white' : 'text-emerald-400 hover:text-emerald-300'}`} title={row.visible === false ? 'Hidden' : 'Visible'}>
                   {row.visible === false ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                 </button>

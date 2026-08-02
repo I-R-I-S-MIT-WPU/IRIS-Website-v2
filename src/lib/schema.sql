@@ -12,6 +12,7 @@ create table if not exists blogs (
   read_time text,
   date text,
   visible boolean default true,
+  pinned boolean default false,
   created_at timestamptz default now()
 );
 
@@ -43,6 +44,7 @@ create table if not exists projects (
   gallery text[] default '{}',
   team_members uuid[] default '{}',
   visible boolean default true,
+  pinned boolean default false,
   created_at timestamptz default now()
 );
 
@@ -58,6 +60,7 @@ create table if not exists members (
   github text,
   instagram text,
   visible boolean default true,
+  pinned boolean default false,
   created_at timestamptz default now()
 );
 

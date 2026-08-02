@@ -10,7 +10,7 @@ const DOMAINS = {
 };
 
 const STEPS = ['Personal Info', 'Domains', 'Details'];
-const WHATSAPP_GROUP_LINK = 'https://chat.whatsapp.com/YOUR_GROUP_LINK';
+const WHATSAPP_GROUP_LINK = 'https://chat.whatsapp.com/BdXhIsmKJ3858jcLbWspmY';
 
 export default function Recruitments() {
   const [step, setStep] = useState(0);

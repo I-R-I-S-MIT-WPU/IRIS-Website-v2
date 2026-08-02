@@ -38,25 +38,25 @@ export default function Hero({ onJoinClick }: HeroProps) {
       </div>
 
       {/* IRIS text - behind the Spline scene, bigger and shifted up */}
-      <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none -translate-y-[8%]">
+      <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none -translate-y-[15%] md:-translate-y-[8%]">
         <motion.h1
           initial={{ opacity: 0, y: 30, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          className="font-hanson font-bold text-[22vw] sm:text-[20vw] md:text-[18vw] leading-none tracking-tight uppercase select-none text-center bg-gradient-to-b from-white via-zinc-100 to-zinc-400 bg-clip-text text-transparent"
+          className="font-hanson font-bold text-[18vw] sm:text-[20vw] md:text-[18vw] leading-none tracking-tight uppercase select-none text-center bg-gradient-to-b from-white via-zinc-100 to-zinc-400 bg-clip-text text-transparent"
         >
           I.R.I.S.
         </motion.h1>
       </div>
 
-      {/* Spline 3D scene - in front of text */}
-      <div className="absolute inset-0 z-20">
+      {/* Spline 3D scene - in front of text, hidden on mobile */}
+      <div className="absolute inset-0 z-20 hidden md:block">
         <Spline scene="https://prod.spline.design/EQThF8nDrvGZcz3o/scene.splinecode" />
       </div>
 
       {/* Slogan and button - behind the bot (same z as IRIS text) */}
-      <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
-        <div className="w-full max-w-6xl mx-auto px-6 sm:px-12 md:px-16 lg:px-20 flex flex-col md:flex-row items-start md:items-end justify-between gap-4 md:gap-6 mt-[28vh]">
+      <div className="absolute inset-0 z-10 flex items-end md:items-center justify-center pointer-events-none pb-32 md:pb-0">
+        <div className="w-full max-w-6xl mx-auto px-6 sm:px-12 md:px-16 lg:px-20 flex flex-col md:flex-row items-start md:items-end justify-between gap-4 md:gap-6">
           {/* Left Column Slogan */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -64,10 +64,10 @@ export default function Hero({ onJoinClick }: HeroProps) {
             transition={{ delay: 0.3, duration: 0.7, ease: "easeOut" }}
             className="text-left font-poppins pointer-events-auto"
           >
-            <p className="font-extrabold uppercase tracking-[0.24em] text-[11px] sm:text-xs md:text-sm text-white/95 leading-none">
+            <p className="font-extrabold uppercase tracking-[0.24em] text-[10px] sm:text-xs md:text-sm text-white/95 leading-none">
               INNOVATION &nbsp;&nbsp;&nbsp;&nbsp; RESEARCH
             </p>
-            <p className="font-extrabold uppercase tracking-[0.24em] text-[11px] sm:text-xs md:text-sm text-white/95 leading-none mt-3">
+            <p className="font-extrabold uppercase tracking-[0.24em] text-[10px] sm:text-xs md:text-sm text-white/95 leading-none mt-2 sm:mt-3">
               INTELLIGENCE &nbsp;&nbsp;&nbsp;&nbsp; SUPPORT
             </p>
           </motion.div>

@@ -3,7 +3,7 @@ import { supabase } from './supabase';
 // ─── BLOGS ───────────────────────────────────────────────
 
 export async function getBlogs(visibleOnly = false) {
-  let q = supabase.from('blogs').select('*').order('created_at', { ascending: false });
+  let q = supabase.from('blogs').select('*').order('pinned', { ascending: false }).order('created_at', { ascending: false });
   if (visibleOnly) q = q.eq('visible', true);
   const { data, error } = await q;
   if (error) throw error;
@@ -63,7 +63,7 @@ export async function deleteEvent(id: string) {
 // ─── PROJECTS ────────────────────────────────────────────
 
 export async function getProjects(visibleOnly = false) {
-  let q = supabase.from('projects').select('*').order('created_at', { ascending: false });
+  let q = supabase.from('projects').select('*').order('pinned', { ascending: false }).order('created_at', { ascending: false });
   if (visibleOnly) q = q.eq('visible', true);
   const { data, error } = await q;
   if (error) throw error;
@@ -90,7 +90,7 @@ export async function deleteProject(id: string) {
 // ─── MEMBERS ─────────────────────────────────────────────
 
 export async function getMembers(visibleOnly = false) {
-  let q = supabase.from('members').select('*').order('created_at', { ascending: false });
+  let q = supabase.from('members').select('*').order('pinned', { ascending: false }).order('created_at', { ascending: false });
   if (visibleOnly) q = q.eq('visible', true);
   const { data, error } = await q;
   if (error) throw error;
