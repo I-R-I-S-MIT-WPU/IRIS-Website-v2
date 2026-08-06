@@ -173,30 +173,25 @@ export default function AboutPage() {
             ))}
           </div>
 
-          <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 mt-12'>
+          <div className='grid grid-cols-1 lg:grid-cols-2 gap-10 mt-12'>
             <div>
               <h3 className='font-funnel font-bold text-2xl text-white mb-5'>
                 Tech
               </h3>
-              <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5'>
+              <div className='space-y-3'>
                 {techMembers.map((member) => (
                   <div
                     key={member.id}
                     onClick={() => setSelectedMember(member)}
-                    className='group bg-zinc-900/80 border border-white/5 hover:border-iris-purple/30 rounded-2xl p-5 text-center cursor-pointer transition-all'>
-                    <img
-                      src={member.photo}
-                      alt={member.name}
-                      referrerPolicy='no-referrer'
-                      className='w-20 h-20 rounded-full object-cover mx-auto mb-3 group-hover:ring-2 group-hover:ring-iris-purple/50 transition-all'
-                    />
-                    <p className='text-white font-semibold text-sm mb-0.5'>
-                      {member.name}
-                    </p>
-                    <p className='text-iris-purple text-xs font-medium mb-1'>
-                      {member.position}
-                    </p>
-                    <p className='text-gray-600 text-[11px]'>{member.domain}</p>
+                    className='group bg-zinc-900/80 border border-white/5 hover:border-iris-purple/30 rounded-2xl px-4 py-3 cursor-pointer transition-all'>
+                    <div className='flex items-center justify-between gap-3'>
+                      <p className='text-white font-semibold text-sm truncate'>
+                        {member.name}
+                      </p>
+                      <p className='text-iris-purple text-xs font-medium truncate'>
+                        - {member.position}
+                      </p>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -205,25 +200,20 @@ export default function AboutPage() {
               <h3 className='font-funnel font-bold text-2xl text-white mb-5'>
                 Non Tech
               </h3>
-              <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5'>
+              <div className='space-y-3'>
                 {nonTechMembers.map((member) => (
                   <div
                     key={member.id}
                     onClick={() => setSelectedMember(member)}
-                    className='group bg-zinc-900/80 border border-white/5 hover:border-iris-purple/30 rounded-2xl p-5 text-center cursor-pointer transition-all'>
-                    <img
-                      src={member.photo}
-                      alt={member.name}
-                      referrerPolicy='no-referrer'
-                      className='w-20 h-20 rounded-full object-cover mx-auto mb-3 group-hover:ring-2 group-hover:ring-iris-purple/50 transition-all'
-                    />
-                    <p className='text-white font-semibold text-sm mb-0.5'>
-                      {member.name}
-                    </p>
-                    <p className='text-iris-purple text-xs font-medium mb-1'>
-                      {member.position}
-                    </p>
-                    <p className='text-gray-600 text-[11px]'>{member.domain}</p>
+                    className='group bg-zinc-900/80 border border-white/5 hover:border-iris-purple/30 rounded-2xl px-4 py-3 cursor-pointer transition-all'>
+                    <div className='flex items-center justify-between gap-3'>
+                      <p className='text-white font-semibold text-sm truncate'>
+                        {member.name}
+                      </p>
+                      <p className='text-iris-purple text-xs font-medium truncate'>
+                        - {member.position}
+                      </p>
+                    </div>
                   </div>
                 ))}
               </div>
