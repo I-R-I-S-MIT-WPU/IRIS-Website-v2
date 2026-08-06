@@ -50,7 +50,7 @@ export default function Dashboard() {
     { key: "blogs", label: "Blogs", icon: FileText },
     { key: "events", label: "Events", icon: Calendar },
     { key: "projects", label: "Projects", icon: FolderOpen },
-    { key: "members", label: "Members", icon: Users },
+    { key: "members", label: "Core Teams", icon: Users },
     { key: "mentors", label: "Mentors", icon: Users },
     { key: "gallery", label: "Gallery", icon: ImageIcon },
     { key: "applications", label: "Applications", icon: FileText },
@@ -144,7 +144,7 @@ function OverviewTab({ onNavigate }: { onNavigate: (t: Tab) => void }) {
     { label: "Blogs", value: counts.blogs, tab: "blogs" as Tab },
     { label: "Events", value: counts.events, tab: "events" as Tab },
     { label: "Projects", value: counts.projects, tab: "projects" as Tab },
-    { label: "Members", value: counts.members, tab: "members" as Tab },
+    { label: "Core Teams", value: counts.members, tab: "members" as Tab },
     {
       label: "Applications",
       value: counts.applications,
@@ -1408,7 +1408,16 @@ function ProjectEditor({
 
 // ─── Members Tab ─────────────────────────────────────────
 
-const MEMBER_DOMAINS = ["Software", "Hardware", "Non-Tech"];
+const MEMBER_DOMAINS = ["Software", "Hardware", "Core", "Non-Tech"];
+const CORE_TEAM_POSITIONS = [
+  "President",
+  "Vice President",
+  "Technical Lead",
+  "Design Lead",
+  "Hardware Lead",
+  "Events Head",
+  "Content Lead",
+];
 
 function MembersTab() {
   const [rows, setRows] = useState<any[]>([]);
@@ -1453,26 +1462,40 @@ function MembersTab() {
     );
   }
 
-  return (
+  const coreTeamRows = rows.filter(
+    (row) =>
+      CORE_TEAM_POSITIONS.includes(row.position) ||
+      row.domain?.toLowerCase() === "core",
+  );
+  const techRows = rows.filter(
+    (row) =>
+      row.domain?.toLowerCase() !== "non-tech" &&
+      row.domain?.toLowerCase() !== "core",
+  );
+  const nonTechRows = rows.filter(
+    (row) => row.domain?.toLowerCase() === "non-tech",
+  );
+
+  const renderSection = (title: string, sectionRows: any[]) => (
     <div>
-      <div className='flex items-center justify-between mb-6'>
-        <h2 className='text-white font-semibold text-lg'>Members</h2>
-        <button
-          onClick={() => setCreating(true)}
-          className='flex items-center gap-2 bg-iris-purple hover:bg-iris-purple/80 text-white px-4 py-2 rounded-lg text-sm font-medium cursor-pointer transition-all'>
-          <Plus className='w-4 h-4' /> Add Member
-        </button>
+      <div className='flex items-center justify-between mb-4'>
+        <div>
+          <h3 className='text-white font-semibold text-base'>{title}</h3>
+          <p className='text-gray-500 text-xs'>
+            {sectionRows.length} member{sectionRows.length !== 1 ? "s" : ""}
+          </p>
+        </div>
       </div>
-      {loading ? (
-        <p className='text-gray-500 text-sm'>Loading...</p>
-      ) : rows.length === 0 ? (
-        <p className='text-gray-500 text-sm'>No members yet.</p>
+      {sectionRows.length === 0 ? (
+        <p className='text-gray-500 text-sm'>No {title.toLowerCase()} yet.</p>
       ) : (
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3'>
-          {rows.map((row) => (
+          {sectionRows.map((row) => (
             <div
               key={row.id}
-              className={`bg-zinc-900/80 border border-white/5 rounded-xl p-4 flex items-center gap-3 ${row.visible === false ? "opacity-50" : ""}`}>
+              className={`bg-zinc-900/80 border border-white/5 rounded-xl p-4 flex items-center gap-3 ${
+                row.visible === false ? "opacity-50" : ""
+              }`}>
               {row.photo ? (
                 <img
                   src={row.photo}
@@ -1503,7 +1526,11 @@ function MembersTab() {
                     await db.updateMember(row.id, { pinned: !row.pinned });
                     load();
                   }}
-                  className={`p-1.5 cursor-pointer ${row.pinned ? "text-iris-purple hover:text-iris-purple/80" : "text-gray-600 hover:text-iris-purple"}`}
+                  className={`p-1.5 cursor-pointer ${
+                    row.pinned
+                      ? "text-iris-purple hover:text-iris-purple/80"
+                      : "text-gray-600 hover:text-iris-purple"
+                  }`}
                   title={row.pinned ? "Pinned" : "Pin to top"}>
                   {row.pinned ? (
                     <Pin className='w-3.5 h-3.5 fill-current' />
@@ -1516,7 +1543,11 @@ function MembersTab() {
                     await db.updateMember(row.id, { visible: !row.visible });
                     load();
                   }}
-                  className={`p-1.5 cursor-pointer ${row.visible === false ? "text-gray-600 hover:text-white" : "text-emerald-400 hover:text-emerald-300"}`}
+                  className={`p-1.5 cursor-pointer ${
+                    row.visible === false
+                      ? "text-gray-600 hover:text-white"
+                      : "text-emerald-400 hover:text-emerald-300"
+                  }`}
                   title={row.visible === false ? "Hidden" : "Visible"}>
                   {row.visible === false ? (
                     <EyeOff className='w-3.5 h-3.5' />
@@ -1537,6 +1568,28 @@ function MembersTab() {
               </div>
             </div>
           ))}
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <div>
+      <div className='flex items-center justify-between mb-6'>
+        <h2 className='text-white font-semibold text-lg'>Core Teams</h2>
+        <button
+          onClick={() => setCreating(true)}
+          className='flex items-center gap-2 bg-iris-purple hover:bg-iris-purple/80 text-white px-4 py-2 rounded-lg text-sm font-medium cursor-pointer transition-all'>
+          <Plus className='w-4 h-4' /> Add Member
+        </button>
+      </div>
+      {loading ? (
+        <p className='text-gray-500 text-sm'>Loading...</p>
+      ) : (
+        <div className='space-y-10'>
+          {renderSection("Core Teams", coreTeamRows)}
+          {renderSection("Tech", techRows)}
+          {renderSection("Non Tech", nonTechRows)}
         </div>
       )}
     </div>
@@ -2499,6 +2552,21 @@ function ApplicationsTab() {
   const [apps, setApps] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<any | null>(null);
+  const [domainFilter, setDomainFilter] = useState<string[]>([]);
+  const [domainDropdownOpen, setDomainDropdownOpen] = useState(false);
+  const domainDropdownRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const onDocClick = (e: MouseEvent) => {
+      if (!domainDropdownRef.current) return;
+      if (!(e.target instanceof Node)) return;
+      if (!domainDropdownRef.current.contains(e.target)) {
+        setDomainDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, []);
 
   useEffect(() => {
     db.getApplications()
@@ -2508,6 +2576,42 @@ function ApplicationsTab() {
       })
       .catch(() => setLoading(false));
   }, []);
+
+  const normalizeDomain = (value: string = "") =>
+    value
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
+
+  const getDomainValues = (app: any) => {
+    if (Array.isArray(app?.domains)) return app.domains;
+    if (typeof app?.domains === "string")
+      return app.domains
+        .split(",")
+        .map((d: string) => d.trim())
+        .filter(Boolean);
+    if (typeof app?.interests === "string")
+      return app.interests
+        .split(",")
+        .map((d: string) => d.trim())
+        .filter(Boolean);
+    return [];
+  };
+
+  const filteredApps = apps.filter((app) => {
+    if (domainFilter.length === 0) return true;
+    return getDomainValues(app).some((domain: string) =>
+      domainFilter.some(
+        (filter) => normalizeDomain(domain) === normalizeDomain(filter),
+      ),
+    );
+  });
+
+  useEffect(() => {
+    if (selected && !filteredApps.some((app) => app.id === selected.id)) {
+      setSelected(null);
+    }
+  }, [filteredApps, selected]);
 
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this application?")) return;
@@ -2527,14 +2631,144 @@ function ApplicationsTab() {
   return (
     <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
       <div className='lg:col-span-2'>
-        <h2 className='text-white font-semibold text-lg mb-6'>
-          Applications ({apps.length})
-        </h2>
-        {apps.length === 0 ? (
-          <p className='text-gray-500 text-sm'>No applications yet.</p>
+        <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6'>
+          <h2 className='text-white font-semibold text-lg'>
+            Applications ({filteredApps.length})
+          </h2>
+          <div className='flex flex-col sm:flex-row gap-2'>
+            <div
+              className='relative text-xs text-gray-400'
+              ref={domainDropdownRef}>
+              <button
+                type='button'
+                onClick={() => setDomainDropdownOpen((s) => !s)}
+                className='flex items-center gap-3 bg-zinc-900 border border-white/10 px-3 py-2 rounded-lg text-sm text-white'>
+                <span className='uppercase tracking-wide text-xs'>Domain</span>
+                <div className='flex items-center gap-2 flex-wrap'>
+                  {domainFilter.length === 0 ? (
+                    <span className='text-gray-400'>All</span>
+                  ) : (
+                    domainFilter.map((d) => (
+                      <span
+                        key={d}
+                        className='px-2 py-0.5 rounded-full text-xs bg-iris-purple/20 text-iris-purple'>
+                        {d}
+                      </span>
+                    ))
+                  )}
+                </div>
+                <svg
+                  className='w-4 h-4 ml-2 text-gray-300'
+                  viewBox='0 0 20 20'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'>
+                  <path
+                    d='M6 8l4 4 4-4'
+                    stroke='currentColor'
+                    strokeWidth='1.5'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                  />
+                </svg>
+              </button>
+
+              {domainDropdownOpen && (
+                <div className='absolute right-0 mt-2 w-72 bg-zinc-900 border border-white/10 rounded-lg p-3 shadow-lg z-50'>
+                  <div className='mb-3'>
+                    <div className='text-iris-purple text-[11px] font-semibold uppercase'>
+                      TECH
+                    </div>
+                    <div className='flex flex-col gap-2 mt-2'>
+                      {["HARDWARE", "SOFTWARE"].map((opt) => {
+                        const active = domainFilter.includes(opt);
+                        return (
+                          <button
+                            key={opt}
+                            type='button'
+                            onClick={() =>
+                              setDomainFilter((prev) =>
+                                active
+                                  ? prev.filter((i) => i !== opt)
+                                  : [...prev, opt],
+                              )
+                            }
+                            className={`text-left px-3 py-2 rounded-lg transition-all w-full ${
+                              active
+                                ? "bg-iris-purple/20 border border-iris-purple text-iris-purple"
+                                : "bg-transparent text-gray-300 hover:bg-white/5 hover:border-white/10"
+                            }`}>
+                            {opt}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className='text-iris-purple text-[11px] font-semibold uppercase'>
+                      NON TECH
+                    </div>
+                    <div className='flex flex-col gap-2 mt-2'>
+                      {[
+                        "Content Writing",
+                        "Content Creation",
+                        "Editor",
+                        "Designer",
+                        "Event And Ops",
+                        "Marketing",
+                      ].map((opt) => {
+                        const active = domainFilter.includes(opt);
+                        return (
+                          <button
+                            key={opt}
+                            type='button'
+                            onClick={() =>
+                              setDomainFilter((prev) =>
+                                active
+                                  ? prev.filter((i) => i !== opt)
+                                  : [...prev, opt],
+                              )
+                            }
+                            className={`text-left px-3 py-2 rounded-lg transition-all w-full ${
+                              active
+                                ? "bg-iris-purple/20 border border-iris-purple text-iris-purple"
+                                : "bg-transparent text-gray-300 hover:bg-white/5 hover:border-white/10"
+                            }`}>
+                            {opt}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className='mt-3 flex items-center justify-between gap-2'>
+                    <button
+                      type='button'
+                      onClick={() => setDomainFilter([])}
+                      className='text-sm text-gray-400 hover:text-white'>
+                      Clear
+                    </button>
+                    <div className='flex gap-2'>
+                      <button
+                        type='button'
+                        onClick={() => setDomainDropdownOpen(false)}
+                        className='px-3 py-1.5 rounded-lg bg-zinc-800 text-sm text-white'>
+                        Done
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+        {filteredApps.length === 0 ? (
+          <p className='text-gray-500 text-sm'>
+            No applications match the selected filters.
+          </p>
         ) : (
           <div className='space-y-3'>
-            {apps.map((app) => (
+            {filteredApps.map((app) => (
               <div
                 key={app.id}
                 onClick={() => setSelected(app)}
