@@ -1,30 +1,37 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { Send, Upload, ChevronRight, ChevronLeft, Check } from 'lucide-react';
-import { createApplication, uploadFile } from '../lib/db';
-import { sendConfirmationEmail } from '../lib/emailjs';
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { Send, Upload, ChevronRight, ChevronLeft, Check } from "lucide-react";
+import { createApplication, uploadFile } from "../lib/db";
+import { sendConfirmationEmail } from "../lib/emailjs";
 
 const DOMAINS = {
-  'TECH': ['Hardware', 'Software'],
-  'NON TECH': ['Content Writing', 'Content Creation', 'Editor', 'Designer', 'Events and Ops', 'Marketing'],
+  TECH: ["Hardware", "Software"],
+  "NON TECH": [
+    "Content Writing",
+    "Content Creation",
+    "Editor",
+    "Designer",
+    "Events and Ops",
+    "Marketing",
+  ],
 };
 
-const STEPS = ['Personal Info', 'Domains', 'Details'];
-const WHATSAPP_GROUP_LINK = 'https://chat.whatsapp.com/BdXhIsmKJ3858jcLbWspmY';
+const STEPS = ["Personal Info", "Domains", "Details"];
+const WHATSAPP_GROUP_LINK = "https://chat.whatsapp.com/BdXhIsmKJ3858jcLbWspmY";
 
 export default function Recruitments() {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({
-    name: '',
-    prn: '',
-    email: '',
-    phone: '',
-    branch: '',
-    year: '',
+    name: "",
+    prn: "",
+    email: "",
+    phone: "",
+    branch: "",
+    year: "",
     domains: [] as string[],
-    interests: '',
-    experience: '',
-    why: '',
+    interests: "",
+    experience: "",
+    why: "",
   });
   const [resume, setResume] = useState<File | null>(null);
   const [submitted, setSubmitted] = useState(false);
@@ -33,16 +40,24 @@ export default function Recruitments() {
   const [domainOpen, setDomainOpen] = useState(false);
 
   const handleDomainToggle = (domain: string) => {
-    setForm(prev => ({
+    setForm((prev) => ({
       ...prev,
       domains: prev.domains.includes(domain)
-        ? prev.domains.filter(d => d !== domain)
+        ? prev.domains.filter((d) => d !== domain)
         : [...prev.domains, domain],
     }));
   };
 
   const canProceed = () => {
-    if (step === 0) return form.name && form.prn && form.email && form.phone && form.branch && form.year;
+    if (step === 0)
+      return (
+        form.name &&
+        form.prn &&
+        form.email &&
+        form.phone &&
+        form.branch &&
+        form.year
+      );
     if (step === 1) return form.domains.length > 0;
     return true;
   };
@@ -52,10 +67,10 @@ export default function Recruitments() {
     if (!canProceed()) return;
     setSubmitting(true);
     try {
-      let resume_url = '';
+      let resume_url = "";
       if (resume) {
         const path = `${Date.now()}_${resume.name}`;
-        resume_url = await uploadFile('resumes', path, resume);
+        resume_url = await uploadFile("resumes", path, resume);
       }
       await createApplication({ ...form, resume_url });
 
@@ -64,73 +79,87 @@ export default function Recruitments() {
 
       setSubmitted(true);
     } catch (err) {
-      alert('Something went wrong. Please try again.');
+      alert("Something went wrong. Please try again.");
     }
     setSubmitting(false);
   };
 
-  const inputClass = "w-full bg-zinc-50 border border-zinc-200 focus:border-iris-purple rounded-lg px-4 py-3 text-zinc-900 text-sm placeholder-zinc-400 outline-none transition-colors font-[Inter,sans-serif]";
+  const inputClass =
+    "w-full bg-zinc-50 border border-zinc-200 focus:border-iris-purple rounded-lg px-4 py-3 text-zinc-900 text-sm placeholder-zinc-400 outline-none transition-colors font-[Inter,sans-serif]";
 
   return (
-    <section id="recruitments" className="relative min-h-screen py-28 px-4 sm:px-8 md:px-12 lg:px-20 bg-black overflow-hidden">
+    <section
+      id='recruitments'
+      className='relative min-h-screen py-28 px-4 sm:px-8 md:px-12 lg:px-20 bg-black overflow-hidden'>
       {/* Animated purple glows */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      <div className='absolute inset-0 z-0 pointer-events-none'>
         <motion.div
           animate={{ x: [0, 100, -50, 0], y: [0, -80, 50, 0] }}
-          transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute top-[5%] right-[-10%] w-[700px] h-[700px] rounded-full bg-purple-600/30 blur-[150px]"
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+          className='absolute top-[5%] right-[-10%] w-[700px] h-[700px] rounded-full bg-purple-600/30 blur-[150px]'
         />
         <motion.div
           animate={{ x: [0, -80, 60, 0], y: [0, 60, -40, 0] }}
-          transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute bottom-[5%] left-[-10%] w-[600px] h-[600px] rounded-full bg-purple-500/25 blur-[130px]"
+          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+          className='absolute bottom-[5%] left-[-10%] w-[600px] h-[600px] rounded-full bg-purple-500/25 blur-[130px]'
         />
         <motion.div
-          animate={{ x: [0, 50, -70, 0], y: [0, -50, 70, 0], scale: [1, 1.2, 0.85, 1] }}
-          transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute top-[45%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-violet-500/20 blur-[120px]"
+          animate={{
+            x: [0, 50, -70, 0],
+            y: [0, -50, 70, 0],
+            scale: [1, 1.2, 0.85, 1],
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className='absolute top-[45%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-violet-500/20 blur-[120px]'
         />
         <motion.div
           animate={{ x: [0, -40, 60, 0], y: [0, 70, -50, 0] }}
-          transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute top-[20%] left-[30%] w-[400px] h-[400px] rounded-full bg-fuchsia-500/15 blur-[100px]"
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+          className='absolute top-[20%] left-[30%] w-[400px] h-[400px] rounded-full bg-fuchsia-500/15 blur-[100px]'
         />
       </div>
 
-      <div className="max-w-2xl mx-auto relative z-10">
+      <div className='max-w-2xl mx-auto relative z-10'>
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-8"
-        >
-          <h2 className="font-funnel font-bold text-5xl sm:text-6xl text-white tracking-tight mb-2">
+          className='text-center mb-8'>
+          <h2 className='font-funnel font-bold text-5xl sm:text-6xl text-white tracking-tight mb-2'>
             Join IRIS
           </h2>
-          <p className="text-gray-400 text-sm font-sans">
+          <p className='text-gray-400 text-sm font-sans'>
             Fill out the form below and we'll get back to you.
           </p>
         </motion.div>
 
         {/* Step indicator - outside the form */}
         {!submitted && (
-          <div className="flex items-center gap-2 mb-6 px-1">
+          <div className='flex items-center gap-2 mb-6 px-1'>
             {STEPS.map((label, i) => (
               <React.Fragment key={label}>
-                <div className="flex items-center gap-2">
-                  <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold transition-all ${
-                    i < step ? 'bg-iris-purple text-white' :
-                    i === step ? 'bg-iris-purple text-white' :
-                    'bg-zinc-800 text-zinc-500'
-                  }`}>
-                    {i < step ? <Check className="w-3.5 h-3.5" /> : i + 1}
+                <div className='flex items-center gap-2'>
+                  <div
+                    className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold transition-all ${
+                      i < step
+                        ? "bg-iris-purple text-white"
+                        : i === step
+                          ? "bg-iris-purple text-white"
+                          : "bg-zinc-800 text-zinc-500"
+                    }`}>
+                    {i < step ? <Check className='w-3.5 h-3.5' /> : i + 1}
                   </div>
-                  <span className={`text-xs font-medium ${
-                    i <= step ? 'text-white' : 'text-zinc-600'
-                  }`}>{label}</span>
+                  <span
+                    className={`text-xs font-medium ${
+                      i <= step ? "text-white" : "text-zinc-600"
+                    }`}>
+                    {label}
+                  </span>
                 </div>
                 {i < STEPS.length - 1 && (
-                  <div className={`flex-1 h-px ${i < step ? 'bg-iris-purple' : 'bg-zinc-800'}`} />
+                  <div
+                    className={`flex-1 h-px ${i < step ? "bg-iris-purple" : "bg-zinc-800"}`}
+                  />
                 )}
               </React.Fragment>
             ))}
@@ -141,38 +170,43 @@ export default function Recruitments() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-2xl p-10 text-center"
-          >
-            <div className="w-14 h-14 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-5">
-              <Check className="w-7 h-7 text-emerald-600" />
+            className='bg-white rounded-2xl p-10 text-center'>
+            <div className='w-14 h-14 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-5'>
+              <Check className='w-7 h-7 text-emerald-600' />
             </div>
-            <h3 className="font-funnel font-bold text-2xl text-zinc-900 mb-2">Application Submitted!</h3>
-            <p className="text-zinc-600 text-sm font-sans mb-6">
-              We've received your application and sent a confirmation email to <span className="font-medium text-zinc-900">{form.email}</span>.
+            <h3 className='font-funnel font-bold text-2xl text-zinc-900 mb-2'>
+              Application Submitted!
+            </h3>
+            <p className='text-zinc-600 text-sm font-sans mb-6'>
+              We've received your application
             </p>
-            <div className="bg-gradient-to-br from-iris-purple/5 to-violet-500/5 border border-iris-purple/20 rounded-xl p-5 space-y-3">
-              <p className="text-zinc-700 text-sm font-medium">Next Steps:</p>
-              <ul className="text-left text-sm text-zinc-600 space-y-2">
-                <li className="flex items-start gap-2">
-                  <Check className="w-4 h-4 text-iris-purple mt-0.5 shrink-0" />
-                  <span>Check your email for confirmation</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-4 h-4 text-iris-purple mt-0.5 shrink-0" />
+            <div className='bg-gradient-to-br from-iris-purple/5 to-violet-500/5 border border-iris-purple/20 rounded-xl p-5 space-y-3'>
+              <p className='text-zinc-700 text-sm font-medium'>Next Steps:</p>
+              <ul className='text-left text-sm text-zinc-600 space-y-2'>
+                <li className='flex items-start gap-2'>
+                  <Check className='w-4 h-4 text-iris-purple mt-0.5 shrink-0' />
                   <span>Join our WhatsApp community for updates</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-4 h-4 text-iris-purple mt-0.5 shrink-0" />
+                <li className='flex items-start gap-2'>
+                  <Check className='w-4 h-4 text-iris-purple mt-0.5 shrink-0' />
                   <span>We'll reach out within 3-5 business days</span>
+                </li>
+                <li className='flex items-start gap-2'>
+                  <Check className='w-4 h-4 text-iris-purple mt-0.5 shrink-0' />
+                  <span>Do not fill the form multiple times</span>
                 </li>
               </ul>
               <a
                 href={WHATSAPP_GROUP_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white font-medium text-sm px-6 py-2.5 rounded-lg transition-all mt-3"
-              >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                target='_blank'
+                rel='noopener noreferrer'
+                className='inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white font-medium text-sm px-6 py-2.5 rounded-lg transition-all mt-3'>
+                <svg
+                  className='w-5 h-5'
+                  fill='currentColor'
+                  viewBox='0 0 24 24'>
+                  <path d='M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z' />
+                </svg>
                 Join WhatsApp Community
               </a>
             </div>
@@ -184,87 +218,110 @@ export default function Recruitments() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-white rounded-2xl p-6 sm:p-8"
-            >
+              className='bg-white rounded-2xl p-6 sm:p-8'>
               <form onSubmit={handleSubmit}>
-                <AnimatePresence mode="wait">
+                <AnimatePresence mode='wait'>
                   {step === 0 && (
                     <motion.div
-                      key="step-0"
+                      key='step-0'
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -20 }}
                       transition={{ duration: 0.15 }}
-                      className="space-y-4"
-                    >
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-xs text-zinc-500 font-medium font-[Inter,sans-serif]">Name *</label>
+                      className='space-y-4'>
+                      <div className='flex flex-col gap-1.5'>
+                        <label className='text-xs text-zinc-500 font-medium font-[Inter,sans-serif]'>
+                          Name *
+                        </label>
                         <input
-                          type="text"
+                          type='text'
                           required
                           value={form.name}
-                          onChange={e => setForm({ ...form, name: e.target.value })}
+                          onChange={(e) =>
+                            setForm({ ...form, name: e.target.value })
+                          }
                           className={inputClass}
-                          placeholder="Full Name"
+                          placeholder='Full Name'
                         />
                       </div>
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-xs text-zinc-500 font-medium font-[Inter,sans-serif]">PRN *</label>
+                      <div className='flex flex-col gap-1.5'>
+                        <label className='text-xs text-zinc-500 font-medium font-[Inter,sans-serif]'>
+                          PRN *
+                        </label>
                         <input
-                          type="text"
+                          type='text'
                           required
                           value={form.prn}
-                          onChange={e => setForm({ ...form, prn: e.target.value })}
+                          onChange={(e) =>
+                            setForm({ ...form, prn: e.target.value })
+                          }
                           className={inputClass}
-                          placeholder="PRN Number"
+                          placeholder='PRN Number'
                         />
                       </div>
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-xs text-zinc-500 font-medium font-[Inter,sans-serif]">Email *</label>
+                      <div className='flex flex-col gap-1.5'>
+                        <label className='text-xs text-zinc-500 font-medium font-[Inter,sans-serif]'>
+                          Email *
+                        </label>
                         <input
-                          type="email"
+                          type='email'
                           required
                           value={form.email}
-                          onChange={e => setForm({ ...form, email: e.target.value })}
+                          onChange={(e) =>
+                            setForm({ ...form, email: e.target.value })
+                          }
                           className={inputClass}
-                          placeholder="you@example.com"
+                          placeholder='you@example.com'
                         />
                       </div>
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-xs text-zinc-500 font-medium font-[Inter,sans-serif]">Phone Number *</label>
+                      <div className='flex flex-col gap-1.5'>
+                        <label className='text-xs text-zinc-500 font-medium font-[Inter,sans-serif]'>
+                          Phone Number *
+                        </label>
                         <input
-                          type="tel"
+                          type='tel'
                           required
                           value={form.phone}
-                          onChange={e => setForm({ ...form, phone: e.target.value })}
+                          onChange={(e) =>
+                            setForm({ ...form, phone: e.target.value })
+                          }
                           className={inputClass}
-                          placeholder="+91 XXXXX XXXXX"
+                          placeholder='+91 XXXXX XXXXX'
                         />
                       </div>
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-xs text-zinc-500 font-medium font-[Inter,sans-serif]">Branch *</label>
+                      <div className='flex flex-col gap-1.5'>
+                        <label className='text-xs text-zinc-500 font-medium font-[Inter,sans-serif]'>
+                          Branch *
+                        </label>
                         <input
-                          type="text"
+                          type='text'
                           required
                           value={form.branch}
-                          onChange={e => setForm({ ...form, branch: e.target.value })}
+                          onChange={(e) =>
+                            setForm({ ...form, branch: e.target.value })
+                          }
                           className={inputClass}
-                          placeholder="e.g. Computer Science"
+                          placeholder='e.g. Computer Science'
                         />
                       </div>
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-xs text-zinc-500 font-medium font-[Inter,sans-serif]">Current Year *</label>
+                      <div className='flex flex-col gap-1.5'>
+                        <label className='text-xs text-zinc-500 font-medium font-[Inter,sans-serif]'>
+                          Current Year *
+                        </label>
                         <select
                           required
                           value={form.year}
-                          onChange={e => setForm({ ...form, year: e.target.value })}
-                          className={inputClass + ' appearance-none'}
-                        >
-                          <option value="" disabled>Choose your year</option>
-                          <option value="FE">FE (First Year)</option>
-                          <option value="SE">SE (Second Year)</option>
-                          <option value="TE">TE (Third Year)</option>
-                          <option value="BE">BE (Fourth Year)</option>
+                          onChange={(e) =>
+                            setForm({ ...form, year: e.target.value })
+                          }
+                          className={inputClass + " appearance-none"}>
+                          <option value='' disabled>
+                            Choose your year
+                          </option>
+                          <option value='FE'>FE (First Year)</option>
+                          <option value='SE'>SE (Second Year)</option>
+                          <option value='TE'>TE (Third Year)</option>
+                          <option value='BE'>BE (Fourth Year)</option>
                         </select>
                       </div>
                     </motion.div>
@@ -272,42 +329,57 @@ export default function Recruitments() {
 
                   {step === 1 && (
                     <motion.div
-                      key="step-1"
+                      key='step-1'
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -20 }}
                       transition={{ duration: 0.15 }}
-                      className="space-y-5"
-                    >
-                      <div className="flex flex-col gap-1.5 relative">
-                        <label className="text-xs text-zinc-500 font-medium font-[Inter,sans-serif]">Select Domain(s) *</label>
+                      className='space-y-5'>
+                      <div className='flex flex-col gap-1.5 relative'>
+                        <label className='text-xs text-zinc-500 font-medium font-[Inter,sans-serif]'>
+                          Select Domain(s) *
+                        </label>
                         <div
                           onClick={() => setDomainOpen(!domainOpen)}
-                          className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-4 py-3 text-sm font-[Inter,sans-serif] cursor-pointer flex items-center justify-between"
-                        >
-                          <span className={form.domains.length ? 'text-zinc-900' : 'text-zinc-400'}>
-                            {form.domains.length ? form.domains.join(', ') : 'Select...'}
+                          className='w-full bg-zinc-50 border border-zinc-200 rounded-lg px-4 py-3 text-sm font-[Inter,sans-serif] cursor-pointer flex items-center justify-between'>
+                          <span
+                            className={
+                              form.domains.length
+                                ? "text-zinc-900"
+                                : "text-zinc-400"
+                            }>
+                            {form.domains.length
+                              ? form.domains.join(", ")
+                              : "Select..."}
                           </span>
-                          <ChevronRight className={`w-4 h-4 text-zinc-400 transition-transform ${domainOpen ? 'rotate-90' : ''}`} />
+                          <ChevronRight
+                            className={`w-4 h-4 text-zinc-400 transition-transform ${domainOpen ? "rotate-90" : ""}`}
+                          />
                         </div>
 
                         {domainOpen && (
-                          <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-zinc-200 rounded-lg shadow-lg z-20 max-h-64 overflow-y-auto">
+                          <div className='absolute top-full left-0 right-0 mt-1 bg-white border border-zinc-200 rounded-lg shadow-lg z-20 max-h-64 overflow-y-auto'>
                             {Object.entries(DOMAINS).map(([group, items]) => (
                               <div key={group}>
-                                <div className="px-4 py-2 text-[10px] font-bold text-zinc-400 uppercase tracking-wider bg-zinc-50 border-b border-zinc-100">
+                                <div className='px-4 py-2 text-[10px] font-bold text-zinc-400 uppercase tracking-wider bg-zinc-50 border-b border-zinc-100'>
                                   {group}
                                 </div>
-                                {items.map(domain => (
+                                {items.map((domain) => (
                                   <div
                                     key={domain}
                                     onClick={() => handleDomainToggle(domain)}
-                                    className="px-4 py-2.5 text-sm font-[Inter,sans-serif] cursor-pointer hover:bg-zinc-50 flex items-center justify-between"
-                                  >
-                                    <span className={form.domains.includes(domain) ? 'text-iris-purple font-medium' : 'text-zinc-700'}>
+                                    className='px-4 py-2.5 text-sm font-[Inter,sans-serif] cursor-pointer hover:bg-zinc-50 flex items-center justify-between'>
+                                    <span
+                                      className={
+                                        form.domains.includes(domain)
+                                          ? "text-iris-purple font-medium"
+                                          : "text-zinc-700"
+                                      }>
                                       {domain}
                                     </span>
-                                    {form.domains.includes(domain) && <Check className="w-4 h-4 text-iris-purple" />}
+                                    {form.domains.includes(domain) && (
+                                      <Check className='w-4 h-4 text-iris-purple' />
+                                    )}
                                   </div>
                                 ))}
                               </div>
@@ -316,16 +388,22 @@ export default function Recruitments() {
                         )}
                       </div>
 
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-xs text-zinc-500 font-medium font-[Inter,sans-serif]">Resume or CV (Optional)</label>
-                        <label className="flex items-center gap-3 bg-zinc-50 border border-dashed border-zinc-300 hover:border-iris-purple/50 rounded-lg px-4 py-4 cursor-pointer transition-colors">
-                          <Upload className="w-5 h-5 text-zinc-400" />
-                          <span className="text-sm text-zinc-500 font-[Inter,sans-serif]">{resume ? resume.name : 'No file chosen'}</span>
+                      <div className='flex flex-col gap-1.5'>
+                        <label className='text-xs text-zinc-500 font-medium font-[Inter,sans-serif]'>
+                          Resume or CV (Optional)
+                        </label>
+                        <label className='flex items-center gap-3 bg-zinc-50 border border-dashed border-zinc-300 hover:border-iris-purple/50 rounded-lg px-4 py-4 cursor-pointer transition-colors'>
+                          <Upload className='w-5 h-5 text-zinc-400' />
+                          <span className='text-sm text-zinc-500 font-[Inter,sans-serif]'>
+                            {resume ? resume.name : "No file chosen"}
+                          </span>
                           <input
-                            type="file"
-                            accept=".pdf,.doc,.docx"
-                            className="hidden"
-                            onChange={e => setResume(e.target.files?.[0] || null)}
+                            type='file'
+                            accept='.pdf,.doc,.docx'
+                            className='hidden'
+                            onChange={(e) =>
+                              setResume(e.target.files?.[0] || null)
+                            }
                           />
                         </label>
                       </div>
@@ -334,41 +412,54 @@ export default function Recruitments() {
 
                   {step === 2 && (
                     <motion.div
-                      key="step-2"
+                      key='step-2'
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -20 }}
                       transition={{ duration: 0.15 }}
-                      className="space-y-4"
-                    >
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-xs text-zinc-500 font-medium font-[Inter,sans-serif]">What are your areas of interest? (Optional)</label>
+                      className='space-y-4'>
+                      <div className='flex flex-col gap-1.5'>
+                        <label className='text-xs text-zinc-500 font-medium font-[Inter,sans-serif]'>
+                          What are your areas of interest? (Optional)
+                        </label>
                         <textarea
                           rows={2}
                           value={form.interests}
-                          onChange={e => setForm({ ...form, interests: e.target.value })}
-                          className={inputClass + ' resize-none'}
-                          placeholder="AI, Robotics, Web Dev..."
+                          onChange={(e) =>
+                            setForm({ ...form, interests: e.target.value })
+                          }
+                          className={inputClass + " resize-none"}
+                          placeholder='AI, Robotics, Web Dev...'
                         />
                       </div>
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-xs text-zinc-500 font-medium font-[Inter,sans-serif]">Any past experiences in your area of interest? (Optional)</label>
+                      <div className='flex flex-col gap-1.5'>
+                        <label className='text-xs text-zinc-500 font-medium font-[Inter,sans-serif]'>
+                          Any past experiences in your area of interest?
+                          (Optional)
+                        </label>
                         <textarea
                           rows={2}
                           value={form.experience}
-                          onChange={e => setForm({ ...form, experience: e.target.value })}
-                          className={inputClass + ' resize-none'}
-                          placeholder="Projects, internships, competitions..."
+                          onChange={(e) =>
+                            setForm({ ...form, experience: e.target.value })
+                          }
+                          className={inputClass + " resize-none"}
+                          placeholder='Projects, internships, competitions...'
                         />
                       </div>
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-xs text-zinc-500 font-medium font-[Inter,sans-serif]">Why do you want to join IRIS and how will you contribute? (Optional)</label>
+                      <div className='flex flex-col gap-1.5'>
+                        <label className='text-xs text-zinc-500 font-medium font-[Inter,sans-serif]'>
+                          Why do you want to join IRIS and how will you
+                          contribute? (Optional)
+                        </label>
                         <textarea
                           rows={3}
                           value={form.why}
-                          onChange={e => setForm({ ...form, why: e.target.value })}
-                          className={inputClass + ' resize-none'}
-                          placeholder="Tell us what excites you about IRIS..."
+                          onChange={(e) =>
+                            setForm({ ...form, why: e.target.value })
+                          }
+                          className={inputClass + " resize-none"}
+                          placeholder='Tell us what excites you about IRIS...'
                         />
                       </div>
                     </motion.div>
@@ -378,44 +469,43 @@ export default function Recruitments() {
             </motion.div>
 
             {/* Navigation - outside the form */}
-            <div className="flex items-center justify-between mt-5">
+            <div className='flex items-center justify-between mt-5'>
               {step > 0 ? (
                 <button
-                  type="button"
-                  onClick={() => setStep(s => s - 1)}
-                  className="flex items-center gap-1.5 text-sm font-medium text-zinc-400 hover:text-white transition-colors cursor-pointer"
-                >
-                  <ChevronLeft className="w-4 h-4" />
+                  type='button'
+                  onClick={() => setStep((s) => s - 1)}
+                  className='flex items-center gap-1.5 text-sm font-medium text-zinc-400 hover:text-white transition-colors cursor-pointer'>
+                  <ChevronLeft className='w-4 h-4' />
                   Back
                 </button>
-              ) : <div />}
+              ) : (
+                <div />
+              )}
 
               {step < 2 ? (
                 <button
-                  type="button"
-                  onClick={() => canProceed() && setStep(s => s + 1)}
+                  type='button'
+                  onClick={() => canProceed() && setStep((s) => s + 1)}
                   disabled={!canProceed()}
-                  className="flex items-center justify-center gap-1.5 bg-iris-purple hover:bg-iris-purple/90 disabled:opacity-40 disabled:cursor-not-allowed text-white font-medium text-sm px-10 py-3 rounded-xl transition-all cursor-pointer"
-                >
+                  className='flex items-center justify-center gap-1.5 bg-iris-purple hover:bg-iris-purple/90 disabled:opacity-40 disabled:cursor-not-allowed text-white font-medium text-sm px-10 py-3 rounded-xl transition-all cursor-pointer'>
                   Continue
-                  <ChevronRight className="w-4 h-4" />
+                  <ChevronRight className='w-4 h-4' />
                 </button>
               ) : (
                 <button
-                  type="button"
+                  type='button'
                   onClick={handleSubmit as any}
                   disabled={submitting}
-                  className="flex items-center justify-center gap-2 bg-iris-purple hover:bg-iris-purple/90 disabled:opacity-50 text-white font-medium text-sm px-10 py-3 rounded-xl transition-all cursor-pointer"
-                >
+                  className='flex items-center justify-center gap-2 bg-iris-purple hover:bg-iris-purple/90 disabled:opacity-50 text-white font-medium text-sm px-10 py-3 rounded-xl transition-all cursor-pointer'>
                   {submitting ? (
                     <>
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin' />
                       Submitting...
                     </>
                   ) : (
                     <>
                       Submit
-                      <Send className="w-4 h-4" />
+                      <Send className='w-4 h-4' />
                     </>
                   )}
                 </button>

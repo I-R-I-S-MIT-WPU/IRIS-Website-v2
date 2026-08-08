@@ -184,12 +184,12 @@ export default function AboutPage() {
                     key={member.id}
                     onClick={() => setSelectedMember(member)}
                     className='group bg-zinc-900/80 border border-white/5 hover:border-iris-purple/30 rounded-2xl px-4 py-3 cursor-pointer transition-all'>
-                    <div className='flex items-center justify-between gap-3'>
+                    <div>
                       <p className='text-white font-semibold text-sm truncate'>
                         {member.name}
                       </p>
-                      <p className='text-iris-purple text-xs font-medium truncate'>
-                        - {member.position}
+                      <p className='text-iris-purple text-xs font-medium mt-1'>
+                        {member.position}
                       </p>
                     </div>
                   </div>
@@ -206,12 +206,12 @@ export default function AboutPage() {
                     key={member.id}
                     onClick={() => setSelectedMember(member)}
                     className='group bg-zinc-900/80 border border-white/5 hover:border-iris-purple/30 rounded-2xl px-4 py-3 cursor-pointer transition-all'>
-                    <div className='flex items-center justify-between gap-3'>
+                    <div>
                       <p className='text-white font-semibold text-sm truncate'>
                         {member.name}
                       </p>
-                      <p className='text-iris-purple text-xs font-medium truncate'>
-                        - {member.position}
+                      <p className='text-iris-purple text-xs font-medium mt-1'>
+                        {member.position}
                       </p>
                     </div>
                   </div>
